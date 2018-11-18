@@ -1,0 +1,4 @@
+clockworth-photo-alpha-4K.png filter=lfs diff=lfs merge=lfs -text
+clockworth-photo-alpha-HD.png filter=lfs diff=lfs merge=lfs -text
+clockworth-photo-flat-4K.jpg filter=lfs diff=lfs merge=lfs -text
+clockworth-photo-flat-HD.jpg filter=lfs diff=lfs merge=lfs -text
