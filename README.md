@@ -17,7 +17,7 @@ Ticking and some mechanical sounds were derived from [lonemonk's `Grandfather Cl
 
 * "Sun's Song," Copyright © 1998 by Nintendo → **used according to [U.S. "fair use"](https://en.wikipedia.org/wiki/Fair_use#U.S._fair_use_factors):**
 	* **Purpose and Character of Use:** The melody has been re-recorded from scratch using a completely unrelated musical instrument, and included as a small feature of an otherwise completely unrelated kind of work, and is therefore highly transformative.
-	* **Amount and Sustainability of Copyrighted Portion:** Only thirteen notes of one marginal melody were used from an epic, action-adventure video game.
+	* **Amount and Substantiality of Copyrighted Portion:** Only thirteen notes of one marginal melody were used from an epic, action-adventure video game.
 	* **Effect Upon the Work's Value:** The market of the use is entirely separate from the market of the copyrighted work. Far from harming it, the use is a celebration of the work which is likely, if anything, to reinforce its market.
 
 * "God Be with You," William G. Tomer, ca. 1833-1896 → **[Public Domain](https://en.wikipedia.org/wiki/Public_domain_music)**
@@ -26,7 +26,7 @@ Ticking and some mechanical sounds were derived from [lonemonk's `Grandfather Cl
 
 * "He Has Made Me Glad," [Copyright 1976 by Maranatha! Music](https://hymnary.org/text/i_will_enter_his_gates_with_thanksgiving) → **used according to [U.S. "fair use"](https://en.wikipedia.org/wiki/Fair_use#U.S._fair_use_factors):**
 	* **Purpose and Character of Use:** The melody has been recorded from scratch using a typically non-performative musical instrument, and included as a small feature of an otherwise completely unrelated kind of work, and is therefore highly transformative.
-	* **Amount and Sustainability of Copyrighted Portion:** Only thirteen notes of the musical composition were used.
+	* **Amount and Substantiality of Copyrighted Portion:** Only thirteen notes of the musical composition were used.
 	* **Effect Upon the Work's Value:** The market of the use is entirely separate from the market of the copyrighted work. Far from harming it, the use is a celebration of the work which is likely, if anything, to reinforce its market.
 
 * "Count Your Blessings," Edwin O. Excell, ca. 1851-1921 → **[Public Domain](https://en.wikipedia.org/wiki/Public_domain_music)**
