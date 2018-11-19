@@ -28,5 +28,3 @@ sounds/drafts/christ_arose-dusk.wav filter=lfs diff=lfs merge=lfs -text
 sounds/drafts/count_your_blessings.wav filter=lfs diff=lfs merge=lfs -text
 sounds/drafts/westminster_hr_10.wav filter=lfs diff=lfs merge=lfs -text
 sounds/drafts/westminster_hr_12.wav filter=lfs diff=lfs merge=lfs -text
-art/macrocog-bright.jpg filter=lfs diff=lfs merge=lfs -text
-art/macrocog-petri.jpg filter=lfs diff=lfs merge=lfs -text
