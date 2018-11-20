@@ -1,6 +1,8 @@
 # Clockworth
 DIY Robotic Chiming Wall Clock Made on Raspberry Pi
 
+_**Uses Git-LFS.** [Do not](https://github.com/git-lfs/git-lfs/issues/1648#issuecomment-260395890) download as ZIP; this will result in [pointer files](https://github.com/git-lfs/git-lfs/blob/master/docs/spec.md) instead of real ones._
+
 Clockworth mixes the charm of an antique with the ease of electric power and NTP sync over Wifi. Chimes the [Westminster Quarters](https://en.wikipedia.org/wiki/Westminster_Quarters), and optionally sunrise and sunset using [Sunwait](https://github.com/klada/sunwait). Built with Raspbian Linux on [Raspberry Pi](https://www.raspberrypi.org/).
 
 ![Clockworth](art/clockworth-photo-flat-HD.jpg)
