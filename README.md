@@ -11,7 +11,7 @@ _Full installation/assembly instructions coming soon._
 
 # Legal Notice and Credit
 
-All content is Copyright © 2018 by Peter Markley, with exceptions listed below. Code published under the [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html). Sound recordings and artwork published under [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by/4.0/).
+All content is Copyright © 2018 by Peter Markley, with exceptions listed below. Code published under the [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html). Sound recordings and artwork published under [Creative Commons Attribution 4.0](http://creativecommons.org/licenses/by/4.0/). (Audio source components are available [here](https://freesound.org/people/QuartzMMN/packs/25410/).)
 
 Ticking and some mechanical sounds were derived from [lonemonk's `Grandfather Clock Chime.wav`](http://freesound.org/people/lonemonk/sounds/62579/) under [Creative Commons Attribution 3.0](http://creativecommons.org/licenses/by/3.0/).
 
