@@ -1,0 +1,658 @@
+{
+	"location": "48.876667S 123.393333W",
+	"tick": true,
+	"chime": true,
+	"events": [
+		{
+			"enable": true,
+			"label": "Westminster Quarters",
+			"type": "group",
+			"members": [
+				{
+					"enable": true,
+					"label": "Quarter Hours",
+					"type": "group",
+					"members": [
+						{
+							"enable": true,
+							"label": "Quarter-Hour",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "all"
+									},
+									"minute": {
+										"type": "specify",
+										"value": 15
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_15.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "Half-Hour",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "all"
+									},
+									"minute": {
+										"type": "specify",
+										"value": 30
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_30.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "Three-Quarter-Hour",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "all"
+									},
+									"minute": {
+										"type": "specify",
+										"value": 45
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_45.wav"
+							}
+						}
+					]
+				},
+				{
+					"enable": true,
+					"label": "Hours",
+					"type": "group",
+					"members": [
+						{
+							"enable": true,
+							"label": "1",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 1
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_01.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "2",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 2
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_02.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "3",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 3
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_03.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "4",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 4
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_04.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "5",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 5
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_05.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "6",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 6
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_06.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "7",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 7
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_07.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "8",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 8
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_08.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "9",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 9
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_09.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "10",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 10
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_10.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "11",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 11
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_11.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "12",
+							"type": "event",
+							"sequence": 3,
+							"match": {
+								"date": {
+									"type": "all"
+								},
+								"time": {
+									"type": "specify",
+									"hour": {
+										"type": "specify",
+										"format": "meridian",
+										"value": 12
+									},
+									"minute": {
+										"type": "specify",
+										"value": 0
+									}
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/westminster_hr_12.wav"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"enable": true,
+			"label": "Sunrise & Sunset",
+			"type": "group",
+			"members": [
+				{
+					"enable": true,
+					"label": "Sunrise",
+					"type": "event",
+					"sequence": 7,
+					"match": {
+						"date": {
+							"type": "all"
+						},
+						"time": {
+							"type": "sun",
+							"event": "rise",
+							"offset": 0
+						}
+					},
+					"file": {
+						"relative_to": "clockworth",
+						"path": "sounds/drafts/suns_song.wav"
+					}
+				},
+				{
+					"enable": true,
+					"label": "Sunset",
+					"type": "event",
+					"sequence": 7,
+					"match": {
+						"date": {
+							"type": "all"
+						},
+						"time": {
+							"type": "sun",
+							"event": "set",
+							"offset": 0
+						}
+					},
+					"file": {
+						"relative_to": "clockworth",
+						"path": "sounds/drafts/god_be_with_you.wav"
+					}
+				}
+			]
+		},
+		{
+			"enable": true,
+			"label": "Holidays",
+			"type": "group",
+			"members": [
+				{
+					"enable": true,
+					"label": "Thanksgiving",
+					"type": "group",
+					"members": [
+						{
+							"enable": true,
+							"label": "Sunrise",
+							"type": "event",
+							"sequence": 7,
+							"match": {
+								"date": {
+									"type": "specify",
+									"month": {
+										"type": "specify",
+										"value": "Nov"
+									},
+									"day": {
+										"type": "floating",
+										"value": "Thu",
+										"ordinal": 4
+									}
+								},
+								"time": {
+									"type": "sun",
+									"event": "rise",
+									"offset": 0
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/he_has_made_me_glad.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "Sunset",
+							"type": "event",
+							"sequence": 7,
+							"match": {
+								"date": {
+									"type": "specify",
+									"month": {
+										"type": "specify",
+										"value": "Nov"
+									},
+									"day": {
+										"type": "floating",
+										"value": "Thu",
+										"ordinal": 4
+									}
+								},
+								"time": {
+									"type": "sun",
+									"event": "set",
+									"offset": 0
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/count_your_blessings.wav"
+							}
+						}
+					]
+				},
+				{
+					"enable": true,
+					"label": "Christmas",
+					"type": "group",
+					"members": [
+						{
+							"enable": true,
+							"label": "Sunrise",
+							"type": "event",
+							"sequence": 7,
+							"match": {
+								"date": {
+									"type": "specify",
+									"month": {
+										"type": "specify",
+										"value": "Dec"
+									},
+									"day": {
+										"type": "fixed",
+										"value": 25
+									}
+								},
+								"time": {
+									"type": "sun",
+									"event": "rise",
+									"offset": 0
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/joy_to_the_world.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "Sunset",
+							"type": "event",
+							"sequence": 7,
+							"match": {
+								"date": {
+									"type": "specify",
+									"month": {
+										"type": "specify",
+										"value": "Dec"
+									},
+									"day": {
+										"type": "fixed",
+										"value": 25
+									}
+								},
+								"time": {
+									"type": "sun",
+									"event": "set",
+									"offset": 0
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/silent_night.wav"
+							}
+						}
+					]
+				},
+				{
+					"enable": true,
+					"label": "Easter",
+					"type": "group",
+					"members": [
+						{
+							"enable": true,
+							"label": "Sunrise",
+							"type": "event",
+							"sequence": 7,
+							"match": {
+								"date": {
+									"type": "easter",
+									"variant": "western"
+								},
+								"time": {
+									"type": "sun",
+									"event": "rise",
+									"offset": 0
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/christ_arose-dawn.wav"
+							}
+						},
+						{
+							"enable": true,
+							"label": "Sunset",
+							"type": "event",
+							"sequence": 7,
+							"match": {
+								"date": {
+									"type": "easter",
+									"variant": "western"
+								},
+								"time": {
+									"type": "sun",
+									"event": "set",
+									"offset": 0
+								}
+							},
+							"file": {
+								"relative_to": "clockworth",
+								"path": "sounds/drafts/christ_arose-dusk.wav"
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
