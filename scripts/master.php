@@ -28,6 +28,35 @@
 #----------------------------------------------------------------------
 */
 
+/*
+	// this timezone detection code is taken from:
+	// https://bojanz.wordpress.com/2014/03/11/detecting-the-system-timezone-php/
+	// and modified for wider compatibility
+	$timezone = 'UTC';
+	if (is_link('/etc/localtime')) {
+		// Mac OS X (and older Linuxes)    
+		// /etc/localtime is a symlink to the 
+		// timezone in /usr/share/zoneinfo.
+		$filename = readlink('/etc/localtime');
+		$timezone = substr($filename, strpos($filename, '/usr/share/zoneinfo/') + 20);
+	} elseif (file_exists('/etc/timezone')) {
+		// Ubuntu / Debian.
+		$data = file_get_contents('/etc/timezone');
+		if ($data) {
+		    $timezone = $data;
+		}
+	} elseif (file_exists('/etc/sysconfig/clock')) {
+		// RHEL / CentOS
+		$data = parse_ini_file('/etc/sysconfig/clock');
+		if (!empty($data['ZONE'])) {
+		    $timezone = $data['ZONE'];
+		}
+	}
+	date_default_timezone_set($timezone);
+*/
+date_default_timezone_set(exec("timedatectl | grep -i \"time zone\" | cut -d':' -f2 | cut -d' ' -f2"));
+
 echo "hello world\n";
+echo date_default_timezone_get() . "\n";
 
 ?>
