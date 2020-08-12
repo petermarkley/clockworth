@@ -27,36 +27,46 @@
 # 
 #----------------------------------------------------------------------
 */
-
-/*
-	// this timezone detection code is taken from:
-	// https://bojanz.wordpress.com/2014/03/11/detecting-the-system-timezone-php/
-	// and modified for wider compatibility
-	$timezone = 'UTC';
-	if (is_link('/etc/localtime')) {
-		// Mac OS X (and older Linuxes)    
-		// /etc/localtime is a symlink to the 
-		// timezone in /usr/share/zoneinfo.
-		$filename = readlink('/etc/localtime');
-		$timezone = substr($filename, strpos($filename, '/usr/share/zoneinfo/') + 20);
-	} elseif (file_exists('/etc/timezone')) {
-		// Ubuntu / Debian.
-		$data = file_get_contents('/etc/timezone');
-		if ($data) {
-		    $timezone = $data;
-		}
-	} elseif (file_exists('/etc/sysconfig/clock')) {
-		// RHEL / CentOS
-		$data = parse_ini_file('/etc/sysconfig/clock');
-		if (!empty($data['ZONE'])) {
-		    $timezone = $data['ZONE'];
-		}
-	}
-	date_default_timezone_set($timezone);
-*/
 date_default_timezone_set(exec("timedatectl | grep -i \"time zone\" | cut -d':' -f2 | cut -d' ' -f2"));
 
-echo "hello world\n";
-echo date_default_timezone_get() . "\n";
+define("MAX_RECURSION_DEPTH", "100");
+define("CLOCK_ROOT", dirname(__DIR__));
+
+//ingest json
+if ($argc > 1) {
+	$f = $argv[1];
+} else {
+	$f = CLOCK_ROOT."/system/config.json";
+}
+$conf = json_decode(file_get_contents($f));
+
+//parse groups recursively
+function parse_event($seq,$event,$depth,$path) {
+	if ($depth >= MAX_RECURSION_DEPTH)
+		exit("reached max recursion depth");
+	if (!isset($event->enable) || $event->enable == true) {
+		switch ($event->type) {
+			case "group":
+				foreach ($event->members as $member) {
+					parse_event($seq,$member,$depth+1,(empty($path)?"":$path."/").$event->label);
+				}
+			break;
+			case "event":
+				if ($event->sequence == $seq) {
+					echo "\t" . $path."/".$event->label . "\n";
+				}
+			break;
+		}
+	}
+	return;
+}
+
+//loop through an abstract sequence of slots 1 through 10, and only play applicable sounds during their specified time slot
+for ($seq=1; $seq<=10; $seq++) {
+	echo "Slot " . $seq . ":\n";
+	foreach ($conf->events as $event) {
+		parse_event($seq,$event,0,null);
+	}
+}
 
 ?>
