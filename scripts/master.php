@@ -151,7 +151,7 @@ function parse_event($seq,$event,$depth,$path) {
 	return;
 }
 
-//loop through an abstract sequence of slots 1 through 10, and only play the last matching sound during each time slot
+//loop through a sequence of slots 1 through 10, and only play the last matching sound during each sequence slot
 for ($seq=1; $seq<=10; $seq++) {
 	echo "Slot " . $seq . ":\n";
 	$sound = null;
