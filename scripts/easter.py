@@ -3,7 +3,7 @@
 import sys
 import datetime
 
-# obtained from: https://en.wikipedia.org/wiki/Computus#Algorithms
+# obtained from: https://en.wikipedia.org/w/index.php?title=Computus&oldid=897081250#Software
 def IanTaylorEasterJscr(year):
  a = year % 19
  b = year >> 2
@@ -18,6 +18,6 @@ def IanTaylorEasterJscr(year):
  return year, month, day
 
 if len(sys.argv) > 1:
- print IanTaylorEasterJscr(int(sys.argv[1]))
+ print(IanTaylorEasterJscr(int(sys.argv[1])))
 else:
- print IanTaylorEasterJscr(datetime.datetime.today().year)
+ print(IanTaylorEasterJscr(datetime.datetime.today().year))
