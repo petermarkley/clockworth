@@ -67,7 +67,7 @@ if ($v) echo "  Time: ".$t." (".date("D Y-m-d h:ia T",$t).")\n";
 $h12  = (int)date("g", $t);
 $h24  = (int)date("G", $t);
 $m    = (int)date("i", $t);
-$now  = date("G:i", $t);
+$now  = date("H:i", $t);
 $monn = (int)date("n", $t);
 $mona = date("M", $t);
 $day  = (int)date("j", $t);
