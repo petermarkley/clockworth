@@ -67,14 +67,20 @@ if ($v) echo "  Time: ".$t." (".date("D Y-m-d h:ia T",$t).")\n";
 $h12  = (int)date("g", $t);
 $h24  = (int)date("G", $t);
 $m    = (int)date("i", $t);
-$dawn = array(0 => exec(SUNWAIT . " list rise " . $conf->location));
-$dusk = array(0 => exec(SUNWAIT . " list set "  . $conf->location));
-if ($v) echo "   Sun: rise ".$dawn[0].", set ".$dusk[0]."\n";
 $now  = date("G:i", $t);
 $monn = (int)date("n", $t);
-$mona = (int)date("M", $t);
+$mona = date("M", $t);
 $day  = (int)date("j", $t);
 $week = date("D", $t);
+$year = (int)date("Y", $t);
+if (isset($opt["t"]) || isset($opt["time"])) {
+	$dawn = array(0 => exec(SUNWAIT . " list rise d " . $day . " m " . $monn . " y " . ($year-2000) . " " . $conf->location));
+	$dusk = array(0 => exec(SUNWAIT . " list set d " . $day . " m " . $monn . " y " . ($year-2000) . " "  . $conf->location));
+} else {
+	$dawn = array(0 => exec(SUNWAIT . " list rise " . $conf->location));
+	$dusk = array(0 => exec(SUNWAIT . " list set "  . $conf->location));
+}
+if ($v) echo "   Sun: rise ".$dawn[0].", set ".$dusk[0]."\n";
 $easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py"));
 $easter_mon = (int)$easter[1];
 $easter_day = (int)$easter[2];
