@@ -32,25 +32,48 @@ define("CLOCK_ROOT", dirname(__DIR__));
 define("SUNWAIT", exec("command -v sunwait"));
 define("PLAY", (PHP_OS_FAMILY == "Darwin" ? exec("command -v afplay") : exec("command -v aplay")." -q"));
 
+//parse arguments
+$opt = getopt("f:t:hv",array("file:","time:","help","verbose"));
+if (isset($opt["h"]) || isset($opt["help"])) {
+	echo "\nusage:\n\t-h, --help   Display this message.\n\t-f <file>, --file <file>   Use specified config file instead of default.\n\t-t <time>, --time <time>   Run script on simulated date/time, parsed with PHP function strtotime().\n\t-v, --verbose   Print messages about script results.\n\n";
+	exit();
+}
+if (isset($opt["v"]) || isset($opt["verbose"])) {
+	$v = true;
+} else {
+	$v = false;
+}
+
 //ingest json
-if ($argc > 1) {
-	$f = $argv[1];
+if (isset($opt["f"])) {
+	$f = $opt["f"];
+} else if (isset($opt["file"])) {
+	$f = $opt["file"];
 } else {
 	$f = CLOCK_ROOT."/system/config.json";
 }
+if ($v) echo "File: ".$f."\n";
 $conf = json_decode(file_get_contents($f));
 
 //get variables for comparison
-$h12  = (int)date("g");
-$h24  = (int)date("G");
-$m    = (int)date("i");
+if (isset($opt["t"])) {
+	$t = strtotime($opt["t"]);
+} else if (isset($opt["time"])) {
+	$t = strtotime($opt["time"]);
+} else {
+	$t = time();
+}
+if ($v) echo "Time: ".$t." (".date("D Y-m-d h:ia",$t).")\n";
+$h12  = (int)date("g", $t);
+$h24  = (int)date("G", $t);
+$m    = (int)date("i", $t);
 $dawn = array(0 => exec(SUNWAIT . " list rise " . $conf->location));
 $dusk = array(0 => exec(SUNWAIT . " list set "  . $conf->location));
-$now  = date("G:i");
-$monn = (int)date("n");
-$mona = (int)date("M");
-$day  = (int)date("j");
-$week = date("D");
+$now  = date("G:i", $t);
+$monn = (int)date("n", $t);
+$mona = (int)date("M", $t);
+$day  = (int)date("j", $t);
+$week = date("D", $t);
 $easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py"));
 $easter_mon = (int)$easter[1];
 $easter_day = (int)$easter[2];
@@ -60,6 +83,7 @@ $sound = null;
 
 //parse groups recursively
 function parse_event($seq,$event,$depth,$path) {
+	global $v;
 	global $h12, $h24, $m, $dawn, $dusk, $now, $monn, $mona, $day, $week, $easter_mon, $easter_day;
 	global $sound;
 	if ($depth >= MAX_RECURSION_DEPTH)
@@ -74,7 +98,7 @@ function parse_event($seq,$event,$depth,$path) {
 			case "event":
 				if ($event->sequence == $seq) {
 					$event->{"path"} = $path."  >  ".$event->label;
-					echo "\t" . $event->path;
+					if ($v) echo "\t" . $event->path;
 					$match = true;
 					if (isset($event->match->date)) {
 						switch ($event->match->date->type) {
@@ -185,10 +209,10 @@ function parse_event($seq,$event,$depth,$path) {
 						}
 						if ($match) {
 							$sound = $event;
-							echo " [MATCH]";
+							if ($v) echo "    [MATCH]";
 						}
 					}
-					echo "\n";
+					if ($v) echo "\n";
 				}
 			break;
 		}
@@ -197,14 +221,15 @@ function parse_event($seq,$event,$depth,$path) {
 }
 
 //loop through a sequence of slots 1 through 10, and only play the last matching sound during each sequence slot
+if ($v) echo "\n";
 for ($seq=1; $seq<=10; $seq++) {
-	echo "Slot " . $seq . ":\n";
+	if ($v) echo "Slot " . $seq . ":\n";
 	$sound = null;
 	foreach ($conf->events as $event) {
 		parse_event($seq,$event,0,null);
 	}
 	if ($sound !== null) {
-		echo "\n\tLast match:  " . $sound->path . "\n";
+		if ($v) echo "\n\tLast match:  " . $sound->path . "\n";
 		switch (isset($sound->file->relative_to)?$sound->file->relative_to:"") {
 			case "clockworth":
 				$file = CLOCK_ROOT."/".$sound->file->path;
