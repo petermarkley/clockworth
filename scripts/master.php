@@ -92,12 +92,12 @@ function parse_event($seq,$event,$depth,$path) {
 		switch ($event->type) {
 			case "group":
 				foreach ($event->members as $member) {
-					parse_event($seq,$member,$depth+1,(empty($path)?"":$path."  >  ").$event->label);
+					parse_event($seq,$member,$depth+1,(empty($path)?"":$path." \u{2192} ").$event->label);
 				}
 			break;
 			case "event":
 				if ($event->sequence == $seq) {
-					$event->{"path"} = $path."  >  ".$event->label;
+					$event->{"path"} = $path." \u{2192} ".$event->label;
 					if ($v) echo "\t" . $event->path;
 					$match = true;
 					if (isset($event->match->date)) {
