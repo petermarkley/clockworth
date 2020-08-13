@@ -41,19 +41,27 @@ if ($argc > 1) {
 $conf = json_decode(file_get_contents($f));
 
 //get variables for comparison
-$h12 = (int)date("g");
-$h24 = (int)date("G");
-$m   = (int)date("i");
+$h12  = (int)date("g");
+$h24  = (int)date("G");
+$m    = (int)date("i");
 $dawn = array(0 => exec(SUNWAIT . " list rise " . $conf->location));
 $dusk = array(0 => exec(SUNWAIT . " list set "  . $conf->location));
-$now = date("G:i");
+$now  = date("G:i");
+$monn = (int)date("n");
+$mona = (int)date("M");
+$day  = (int)date("j");
+$week = date("D");
+$easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py"));
+$easter_mon = (int)$easter[1];
+$easter_day = (int)$easter[2];
 
 //sound selector
 $sound = null;
 
 //parse groups recursively
 function parse_event($seq,$event,$depth,$path) {
-	global $h12, $h24, $m, $dawn, $dusk, $now;
+	global $h12, $h24, $m, $dawn, $dusk, $now, $monn, $mona, $day, $week, $easter_mon, $easter_day;
+	global $sound;
 	if ($depth >= MAX_RECURSION_DEPTH)
 		exit("reached max recursion depth");
 	if (!isset($event->enable) || $event->enable == true) {
@@ -65,7 +73,7 @@ function parse_event($seq,$event,$depth,$path) {
 			break;
 			case "event":
 				if ($event->sequence == $seq) {
-					echo "\t" . $path." > ".$event->label . "\n";
+					echo "\t" . $path." > ".$event->label;
 					$match = true;
 					if (isset($event->match->date)) {
 						switch ($event->match->date->type) {
@@ -73,75 +81,113 @@ function parse_event($seq,$event,$depth,$path) {
 								$match = true;
 							break;
 							case "specify":
-								$match = false; //FIXME
-							break;
-							case "easter":
-								$match = false; //FIXME
-							break;
-						}
-					}
-					if (!$match) return;
-					if (isset($event->match->time)) {
-						switch ($event->match->time->type) {
-							case "specify":
-								if (isset($event->match->time->hour)) {
-									switch (isset($event->match->time->hour->type)?$event->match->time->hour->type:"") {
-										case "all":
+								$match = false;
+								switch (isset($event->match->date->month->type)?$event->match->date->month->type:"") {
+									case "specify":
+									default:
+										if ($event->match->date->month->value == $mona) {
 											$match = true;
+										}
+									break;
+								}
+								if ($match) {
+									$match = false;
+									switch (isset($event->match->date->day->type)?$event->match->date->day->type:"") {
+										case "floating":
+											if ($event->match->date->day->value == $week) {
+												if ($day > ($event->match->date->day->ordinal-1)*7 && $day <= $event->match->date->day->ordinal*7) {
+													$match = true;
+												}
+											}
 										break;
-										case "specify":
+										case "fixed":
 										default:
-											$match = false;
-											switch (isset($event->match->time->hour->format)?$event->match->time->hour->format:"") {
-												case "military":
-													if ($event->match->time->hour->value == $h24)
-														$match = true;
-												break;
-												case "meridian":
-												default:
-													if ($event->match->time->hour->value == $h12)
-														$match = true;
-												break;
+											if ($event->match->date->day->value == $day) {
+												$match = true;
 											}
 										break;
 									}
 								}
-								if (!$match) return;
-								if (isset($event->match->time->minute)) {
-									switch (isset($event->match->time->minute->type)?$event->match->time->minute->type:"") {
-										case "specify":
-										default:
-											$match = false;
-											if ($event->match->time->minute->value == $m)
-												$match = true;
-										break;
-									}
-								}
 							break;
-							case "sun":
+							case "easter":
 								$match = false;
-								switch ($event->match->time->event) {
-									case "rise":
-										if (!isset($dawn[(int)$event->match->time->offset])) {
-											$dawn[(int)$event->match->time->offset] = exec(SUNWAIT . " list rise offset " . (int)$event->match->time->offset . " " . $conf->location);
-										}
-										if ($dawn[(int)$event->match->time->offset] == $now)
+								switch ($event->match->date->variant) {
+									case "western":
+										if ($easter_mon == $monn && $easter_day == $day) {
 											$match = true;
-									break;
-									case "set":
-										if (!isset($dusk[(int)$event->match->time->offset])) {
-											$dusk[(int)$event->match->time->offset] = exec(SUNWAIT . " list set offset " . (int)$event->match->time->offset . " " . $conf->location);
 										}
-										if ($dusk[(int)$event->match->time->offset] == $now)
-											$match = true;
 									break;
 								}
 							break;
 						}
 					}
 					if ($match) {
-						$sound = $event->file;
+						$match = false;
+						if (isset($event->match->time)) {
+							switch ($event->match->time->type) {
+								case "specify":
+									if (isset($event->match->time->hour)) {
+										switch (isset($event->match->time->hour->type)?$event->match->time->hour->type:"") {
+											case "all":
+												$match = true;
+											break;
+											case "specify":
+											default:
+												$match = false;
+												switch (isset($event->match->time->hour->format)?$event->match->time->hour->format:"") {
+													case "military":
+														if ($event->match->time->hour->value == $h24)
+															$match = true;
+													break;
+													case "meridian":
+													default:
+														if ($event->match->time->hour->value == $h12)
+															$match = true;
+													break;
+												}
+											break;
+										}
+									}
+									if ($match) {
+										if (isset($event->match->time->minute)) {
+											switch (isset($event->match->time->minute->type)?$event->match->time->minute->type:"") {
+												case "specify":
+												default:
+													$match = false;
+													if ($event->match->time->minute->value == $m)
+														$match = true;
+												break;
+											}
+										}
+									}
+								break;
+								case "sun":
+									$match = false;
+									switch ($event->match->time->event) {
+										case "rise":
+											if (!isset($dawn[(int)$event->match->time->offset])) {
+												$dawn[(int)$event->match->time->offset] = exec(SUNWAIT . " list rise offset " . (int)$event->match->time->offset . " " . $conf->location);
+											}
+											if ($dawn[(int)$event->match->time->offset] == $now)
+												$match = true;
+										break;
+										case "set":
+											if (!isset($dusk[(int)$event->match->time->offset])) {
+												$dusk[(int)$event->match->time->offset] = exec(SUNWAIT . " list set offset " . (int)$event->match->time->offset . " " . $conf->location);
+											}
+											if ($dusk[(int)$event->match->time->offset] == $now)
+												$match = true;
+										break;
+									}
+								break;
+							}
+						}
+						if ($match) {
+							$sound = $event->file;
+							echo " [MATCH]";
+						}
 					}
+					echo "\n";
 				}
 			break;
 		}
