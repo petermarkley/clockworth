@@ -204,7 +204,7 @@ for ($seq=1; $seq<=10; $seq++) {
 		parse_event($seq,$event,0,null);
 	}
 	if ($sound !== null) {
-		echo "\n\tLast match:  " . $event->path;
+		echo "\n\tLast match:  " . $sound->path . "\n";
 		switch (isset($sound->file->relative_to)?$sound->file->relative_to:"") {
 			case "clockworth":
 				$file = CLOCK_ROOT."/".$sound->file->path;
