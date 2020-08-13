@@ -52,7 +52,7 @@ if (isset($opt["f"])) {
 } else {
 	$f = CLOCK_ROOT."/system/config.json";
 }
-if ($v) echo "File: ".$f."\n";
+if ($v) echo "  File: ".$f."\n";
 $conf = json_decode(file_get_contents($f));
 
 //get variables for comparison
@@ -63,12 +63,13 @@ if (isset($opt["t"])) {
 } else {
 	$t = time();
 }
-if ($v) echo "Time: ".$t." (".date("D Y-m-d h:ia",$t).")\n";
+if ($v) echo "  Time: ".$t." (".date("D Y-m-d h:ia T",$t).")\n";
 $h12  = (int)date("g", $t);
 $h24  = (int)date("G", $t);
 $m    = (int)date("i", $t);
 $dawn = array(0 => exec(SUNWAIT . " list rise " . $conf->location));
 $dusk = array(0 => exec(SUNWAIT . " list set "  . $conf->location));
+if ($v) echo "   Sun: rise ".$dawn[0].", set ".$dusk[0]."\n";
 $now  = date("G:i", $t);
 $monn = (int)date("n", $t);
 $mona = (int)date("M", $t);
@@ -77,6 +78,7 @@ $week = date("D", $t);
 $easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py"));
 $easter_mon = (int)$easter[1];
 $easter_day = (int)$easter[2];
+if ($v) echo "Easter: ".$easter_mon."/".$easter_day."\n";
 
 //sound selector
 $sound = null;
