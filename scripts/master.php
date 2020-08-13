@@ -68,12 +68,13 @@ function parse_event($seq,$event,$depth,$path) {
 		switch ($event->type) {
 			case "group":
 				foreach ($event->members as $member) {
-					parse_event($seq,$member,$depth+1,(empty($path)?"":$path." > ").$event->label);
+					parse_event($seq,$member,$depth+1,(empty($path)?"":$path."  >  ").$event->label);
 				}
 			break;
 			case "event":
 				if ($event->sequence == $seq) {
-					echo "\t" . $path." > ".$event->label;
+					$event->path = $path."  >  ".$event->label;
+					echo "\t" . $event->path;
 					$match = true;
 					if (isset($event->match->date)) {
 						switch ($event->match->date->type) {
@@ -183,7 +184,7 @@ function parse_event($seq,$event,$depth,$path) {
 							}
 						}
 						if ($match) {
-							$sound = $event->file;
+							$sound = $event;
 							echo " [MATCH]";
 						}
 					}
@@ -203,18 +204,19 @@ for ($seq=1; $seq<=10; $seq++) {
 		parse_event($seq,$event,0,null);
 	}
 	if ($sound !== null) {
-		switch (isset($sound->relative_to)?$sound->relative_to:"") {
+		echo "\n\tLast match:  " . $event->path;
+		switch (isset($sound->file->relative_to)?$sound->file->relative_to:"") {
 			case "clockworth":
-				$file = CLOCK_ROOT."/".$sound->path;
+				$file = CLOCK_ROOT."/".$sound->file->path;
 			break;
 			case "home":
-				$file = "~/".$sound->path;
+				$file = "~/".$sound->file->path;
 			break;
 			case "root":
-				$file = "/".$sound->path;
+				$file = "/".$sound->file->path;
 			break;
 			default:
-				$file = $sound->path;
+				$file = $sound->file->path;
 			break;
 		}
 		exec(PLAY." ".$file);
