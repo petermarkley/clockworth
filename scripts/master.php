@@ -73,7 +73,7 @@ function parse_event($seq,$event,$depth,$path) {
 			break;
 			case "event":
 				if ($event->sequence == $seq) {
-					$event->path = $path."  >  ".$event->label;
+					$event->{"path"} = $path."  >  ".$event->label;
 					echo "\t" . $event->path;
 					$match = true;
 					if (isset($event->match->date)) {
