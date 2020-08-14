@@ -29,6 +29,8 @@ date_default_timezone_set(exec("timedatectl | grep -i \"time zone\" | cut -d':' 
 
 define("MAX_RECURSION_DEPTH", "100");
 define("CLOCK_ROOT", dirname(__DIR__));
+putenv("PATH=/opt/local/bin:".getenv("PATH")); //for MacPorts
+putenv("PATH=/usr/local/bin:".getenv("PATH")); //for Linux
 define("SUNWAIT", exec("command -v sunwait"));
 define("PLAY", (PHP_OS_FAMILY == "Darwin" ? exec("command -v afplay") : exec("command -v aplay")." -q"));
 
@@ -87,8 +89,6 @@ $mona = date("M", $t);
 $day  = (int)date("j", $t);
 $week = date("D", $t);
 $year = (int)date("Y", $t);
-putenv("PATH=/opt/local/bin:".getenv("PATH")); //for MacPorts
-putenv("PATH=/usr/local/bin:".getenv("PATH")); //for Linux
 if (isset($opt["t"]) || isset($opt["time"])) {
 	$dawn = array(0 => exec(SUNWAIT . " list rise d " . $day . " m " . $monn . " y " . ($year-2000) . " " . $conf->location));
 	$dusk = array(0 => exec(SUNWAIT . " list set d " . $day . " m " . $monn . " y " . ($year-2000) . " "  . $conf->location));
