@@ -33,15 +33,26 @@ define("SUNWAIT", exec("command -v sunwait"));
 define("PLAY", (PHP_OS_FAMILY == "Darwin" ? exec("command -v afplay") : exec("command -v aplay")." -q"));
 
 //parse arguments
-$opt = getopt("f:t:hv",array("file:","time:","help","verbose"));
+$opt = getopt("f:t:hvl",array("file:","time:","help","verbose","log"));
 if (isset($opt["h"]) || isset($opt["help"])) {
-	echo "\nusage:\n\t-h, --help   Display this message.\n\t-f <file>, --file <file>   Use specified config file instead of default.\n\t-t <time>, --time <time>   Run script on simulated date/time, parsed with PHP function strtotime().\n\t-v, --verbose   Print messages about script results.\n\n";
+	echo "\nusage:\n\n";
+	echo "\t-h, --help                 Display this message.\n\n";
+	echo "\t-f <file>, --file <file>   Use specified config file instead of default.\n\n";
+	echo "\t-t <time>, --time <time>   Run script on simulated date/time, parsed with PHP function strtotime().\n\n";
+	echo "\t-v, --verbose              Print diagnostic messages.\n\n";
+	echo "\t-l, --log                  Print only when a chime plays, with a single line per chime. More suitable\n";
+	echo "\t                           for log files when the script is run continuously.\n\n";
 	exit();
 }
-if (isset($opt["v"]) || isset($opt["verbose"])) {
+if ((isset($opt["v"]) || isset($opt["verbose"])) && !(isset($opt["l"]) || isset($opt["log"]))) {
 	$v = true;
 } else {
 	$v = false;
+}
+if (isset($opt["l"]) || isset($opt["log"])) {
+	$l = true;
+} else {
+	$l = false;
 }
 
 //ingest json
@@ -253,6 +264,7 @@ for ($seq=1; $seq<=10; $seq++) {
 				$file = $sound->file->path;
 			break;
 		}
+		if ($l) echo date("Y-m-d h:i:s a").": Playing file \"".$file."\" from event \"".$sound->path."\"\n";
 		exec(PLAY." ".$file);
 	}
 }
