@@ -65,6 +65,9 @@ if (isset($opt["f"])) {
 }
 if ($v) echo "  File: ".$f."\n";
 $conf = json_decode(file_get_contents($f));
+if ($conf === null) {
+	exit("can't parse config file");
+}
 
 //get variables for comparison
 if (isset($opt["t"])) {
