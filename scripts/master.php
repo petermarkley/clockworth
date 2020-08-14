@@ -76,14 +76,15 @@ $year = (int)date("Y", $t);
 if (isset($opt["t"]) || isset($opt["time"])) {
 	$dawn = array(0 => exec(SUNWAIT . " list rise d " . $day . " m " . $monn . " y " . ($year-2000) . " " . $conf->location));
 	$dusk = array(0 => exec(SUNWAIT . " list set d " . $day . " m " . $monn . " y " . ($year-2000) . " "  . $conf->location));
+	$easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py ".$year));
 } else {
 	$dawn = array(0 => exec(SUNWAIT . " list rise " . $conf->location));
 	$dusk = array(0 => exec(SUNWAIT . " list set "  . $conf->location));
+	$easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py"));
 }
-if ($v) echo "   Sun: rise ".$dawn[0].", set ".$dusk[0]."\n";
-$easter = explode(", ",exec(CLOCK_ROOT."/scripts/easter.py"));
 $easter_mon = (int)$easter[1];
 $easter_day = (int)$easter[2];
+if ($v) echo "   Sun: rise ".$dawn[0].", set ".$dusk[0]."\n";
 if ($v) echo "Easter: ".$easter_mon."/".$easter_day."\n";
 
 //sound selector
