@@ -87,6 +87,8 @@ $mona = date("M", $t);
 $day  = (int)date("j", $t);
 $week = date("D", $t);
 $year = (int)date("Y", $t);
+putenv("PATH=/opt/local/bin:".getenv("PATH")); //for MacPorts
+putenv("PATH=/usr/local/bin:".getenv("PATH")); //for Linux
 if (isset($opt["t"]) || isset($opt["time"])) {
 	$dawn = array(0 => exec(SUNWAIT . " list rise d " . $day . " m " . $monn . " y " . ($year-2000) . " " . $conf->location));
 	$dusk = array(0 => exec(SUNWAIT . " list set d " . $day . " m " . $monn . " y " . ($year-2000) . " "  . $conf->location));
