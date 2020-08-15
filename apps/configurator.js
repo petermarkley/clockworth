@@ -3,6 +3,7 @@
 imports.gi.versions.Gtk = '3.0';
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
+const ByteArray = imports.byteArray;
 
 class cwconf {
 	// Create the application itself
@@ -62,7 +63,7 @@ class cwconf {
 		// get the contents of the json
 		let [ok, contents] = GLib.file_get_contents('/home/peter/projects/audio/clockworth/system/config.json');
 		if (ok) {
-			this.conf = JSON.parse(contents);
+			this.conf = JSON.parse(ByteArray.toString(contents));
 		}
 	}
 };
