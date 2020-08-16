@@ -40,7 +40,7 @@ class cwconf {
 		switch (data.type) {
 			case "group":
 				iter = model.append(parent);
-				model.set(iter,[0,1],[data.enable,"(Group) "+data.label]);
+				model.set(iter,[0,1],["(Group) "+data.label,data.enable]);
 				for (let i=0; i < data.members.length; i++) {
 					if (!this._buildUI_node(data.members[i],model,iter,depth+1))
 						return false;
@@ -48,7 +48,7 @@ class cwconf {
 			break;
 			case "event":
 				iter = model.append(parent);
-				model.set(iter,[0,1],[data.enable,data.label]);
+				model.set(iter,[0,1],[data.label,data.enable]);
 			break;
 		}
 		return true;
@@ -74,8 +74,8 @@ class cwconf {
 		//model
 		this._tree = new Gtk.TreeStore();
 		this._tree.set_column_types ([
-            GObject.TYPE_BOOLEAN,
-            GObject.TYPE_STRING]);
+            GObject.TYPE_STRING,
+            GObject.TYPE_BOOLEAN]);
 		for (let i=0; i < this.conf.events.length; i++) {
 			this._buildUI_node(this.conf.events[i],this._tree,null,0);
 		}
@@ -84,14 +84,14 @@ class cwconf {
 		this._view = new Gtk.TreeView ({
 			expand: true,
 			model: this._tree });
-		let col1 = new Gtk.TreeViewColumn({ title: "Enable" });
-		let col2 = new Gtk.TreeViewColumn({ title: "Event" });
-		let tgl  = new Gtk.CellRendererToggle();
+		let col1 = new Gtk.TreeViewColumn({ title: "Event" });
+		let col2 = new Gtk.TreeViewColumn({ title: "Enable" });
 		let txt  = new Gtk.CellRendererText();
-		col1.pack_start(tgl,true);
-		col2.pack_start(txt,true);
-		col1.add_attribute(tgl,"active",0);
-		col2.add_attribute(txt,"text",1);
+		let tgl  = new Gtk.CellRendererToggle();
+		col1.pack_start(txt,true);
+		col2.pack_start(tgl,true);
+		col1.add_attribute(txt,"text",0);
+		col2.add_attribute(tgl,"active",1);
 		this._view.insert_column(col1,0);
 		this._view.insert_column(col2,1);
 		this._grid.attach (this._view, 0, 1, 1, 1);
