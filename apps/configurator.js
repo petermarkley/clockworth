@@ -126,14 +126,13 @@ class cwconf {
 			expand: true });
 		let col2 = new Gtk.TreeViewColumn({
 			title: "Enable" });
-		let grp  = new Gtk.CellRendererText({
-			editable: false });
+		//let grp  = new Gtk.CellRendererText({ editable: false });
 		let txt  = new Gtk.CellRendererText({ editable: true });
 		let tgl  = new Gtk.CellRendererToggle({ activatable: true });
-		col1.pack_start(grp,false);
+		//col1.pack_start(grp,false);
 		col1.pack_start(txt,true);
 		col2.pack_start(tgl,true);
-		col1.set_cell_data_func(grp, function (col,cell,model,iter) {
+		/*col1.set_cell_data_func(grp, function (col,cell,model,iter) {
 			if (model.get_value(iter,0)) {
 				cell.text = "(Group) ";
 				cell.weight = Pango.Weight.BOLD;
@@ -148,7 +147,7 @@ class cwconf {
 			} else {
 				cell.foreground = "rgba(0,0,0,0.3)";
 			}
-		});
+		});*/
 		col1.set_cell_data_func(txt, function (col,cell,model,iter) {
 			cell.text = model.get_value(iter,1);
 			if (model.get_value(iter,0)) {
@@ -183,8 +182,16 @@ class cwconf {
 		this._seqGrid = new Gtk.Grid({
 			row_spacing: 10,
 			hexpand: true });
+		this._seqLine = new Gtk.Grid({
+			column_spacing: 10,
+			halign: Gtk.Align.CENTER });
+		this._seqInfo = new Gtk.Image ({
+			stock: 'gtk-info',
+			tooltip_text: "Procedure in case two or more chime events \u201ccollide,\u201d i.e. match on the same minute.\n\nEach minute that the chime script executes, all ten slots are computed in sequence. During this time, only the last match from each slot will be played.\n\nOr, put another way:\n\nIf two matching events share a slot, the latter will replace the other. Otherwise, if they occupy different slots, they will both play in order." });
 		this._seqLabel = new Gtk.Label({label: "Collision Sequence"});
-		this._seqGrid.attach (this._seqLabel, 0, 0, 1, 1);
+		this._seqLine.attach (this._seqLabel, 0, 0, 1, 1);
+		this._seqLine.attach (this._seqInfo, 1, 0, 1, 1);
+		this._seqGrid.attach (this._seqLine, 0, 0, 1, 1);
 		this._grid.attach (this._seqGrid, 1, 1, 1, 1);
 		
 		//sequence model
