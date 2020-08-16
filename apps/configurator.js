@@ -4,6 +4,8 @@ imports.gi.versions.Gtk = '3.0';
 const Gtk = imports.gi.Gtk;
 const GLib = imports.gi.GLib;
 const ByteArray = imports.byteArray;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
 
 class cwconf {
 	// Create the application itself
@@ -56,21 +58,41 @@ class cwconf {
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
 		
+		this._grid = new Gtk.Grid ({row_spacing: 20});
 		this._image = new Gtk.Image ({
 			file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png',
 			hexpand: true });
-		//this._label = new Gtk.Label ({ label: this.conf.location });
-		//this._expander = new Gtk.Expander ({ label: "Location" });
-		this._grid = new Gtk.Grid ({row_spacing: 20});
-		
-		//this._expander.add(this._label);
-		
-		//this._grid.attach (this._image, 0, 0, 1, 1);
-		//this._grid.attach (this._expander, 0, 1, 1, 1);
-		let i;
+		this._grid.attach (this._image, 0, 0, 1, 1);
+		/*let i;
 		for (i=0; i < this.conf.events.length; i++) {
 			this._grid.attach (this._buildUI_node(this.conf.events[i],0), 0,i+1,1,1);
+		}*/
+		
+		//model
+		this._tree = new Gtk.TreeStore();
+		this._tree.set_column_types ([
+            GObject.TYPE_BOOLEAN,
+            GObject.TYPE_STRING]);
+		for (let i=0; i < this.conf.events.length; i++) {
+			let iter = this._tree.append(null);
+			this._tree.set(iter,[0,1],[this.conf.events[i].enable,this.conf.events[i].label]);
+			
 		}
+		
+		//view
+		this._view = new Gtk.TreeView ({
+			expand: true,
+			model: this._tree });
+		let col1 = new Gtk.TreeViewColumn({ title: "Enable" });
+		let col2 = new Gtk.TreeViewColumn({ title: "Event" });
+		let txt  = new Gtk.CellRendererText();
+		col1.pack_start(txt,true);
+		col2.pack_start(txt,true);
+		col1.add_attribute(txt,"text",0);
+		col2.add_attribute(txt,"text",1);
+		this._view.insert_column(col1,0);
+		this._view.insert_column(col2,1);
+		this._grid.attach (this._view, 0, 1, 1, 1);
 		
 		this._window.add (this._grid);
 		this._window.show_all();
