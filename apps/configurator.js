@@ -37,10 +37,12 @@ class cwconf {
 			return false;
 		}
 		let iter = null;
+		let viable = true;
+		if (parent) viable = model.get_value(parent,2) && model.get_value(parent,3);
 		switch (data.type) {
 			case "group":
 				iter = model.append(parent);
-				model.set(iter,[0,1,2],[true,data.label,data.enable]);
+				model.set(iter,[0,1,2,3],[true,data.label,data.enable,viable]);
 				for (let i=0; i < data.members.length; i++) {
 					if (!this._buildUI_tree(data.members[i],model,iter,depth+1))
 						return false;
@@ -48,7 +50,7 @@ class cwconf {
 			break;
 			case "event":
 				iter = model.append(parent);
-				model.set(iter,[0,1,2],[false,data.label,data.enable]);
+				model.set(iter,[0,1,2,3],[false,data.label,data.enable,viable]);
 			break;
 		}
 		return true;
@@ -61,19 +63,18 @@ class cwconf {
 			return false;
 		}
 		let label = (path.length>0?path+" \u2192 "+data.label:data.label);
-		if (data.enable) {
-			switch (data.type) {
-				case "group":
-					for (let i=0; i < data.members.length; i++) {
-						if (!this._buildUI_seq(data.members[i],model,slots,label,depth+1))
-							return false;
-					}
-				break;
-				case "event":
-					let iter = model.append(slots[data.sequence]);
-					model.set(iter,[0],[label]);
-				break;
-			}
+		let viable = true;
+		switch (data.type) {
+			case "group":
+				for (let i=0; i < data.members.length; i++) {
+					if (!this._buildUI_seq(data.members[i],model,slots,label,depth+1))
+						return false;
+				}
+			break;
+			case "event":
+				let iter = model.append(slots[data.sequence]);
+				model.set(iter,[0,1,2],[label,data.enable,viable]);
+			break;
 		}
 		return true;
 	}
@@ -108,7 +109,8 @@ class cwconf {
 		this._tree.set_column_types ([
 			GObject.TYPE_BOOLEAN,
             GObject.TYPE_STRING,
-            GObject.TYPE_BOOLEAN]);
+            GObject.TYPE_BOOLEAN,
+            GObject.TYPE_BOOLEAN ]);
 		for (let i=0; i < this.conf.events.length; i++) {
 			this._buildUI_tree(this.conf.events[i],this._tree,null,0);
 		}
@@ -134,14 +136,40 @@ class cwconf {
 		col1.set_cell_data_func(grp, function (col,cell,model,iter) {
 			if (model.get_value(iter,0)) {
 				cell.text = "(Group) ";
+				cell.weight = Pango.Weight.BOLD;
 				cell.visible = true;
 			} else {
 				cell.text = "";
+				cell.weight = Pango.Weight.NORMAL;
 				cell.visible = false;
 			}
+			if (model.get_value(iter,2) && model.get_value(iter,3)) {
+				cell.foreground = "#000000";
+			} else {
+				cell.foreground = "#aaaaaa";
+			}
 		});
-		col1.add_attribute(txt,"text",1);
-		col2.add_attribute(tgl,"active",2);
+		col1.set_cell_data_func(txt, function (col,cell,model,iter) {
+			cell.text = model.get_value(iter,1);
+			if (model.get_value(iter,0)) {
+				cell.weight = Pango.Weight.BOLD;
+			} else {
+				cell.weight = Pango.Weight.NORMAL;
+			}
+			if (model.get_value(iter,2) && model.get_value(iter,3)) {
+				cell.foreground = "#000000";
+			} else {
+				cell.foreground = "#aaaaaa";
+			}
+		});
+		col2.set_cell_data_func(tgl, function (col,cell,model,iter) {
+			cell.active = model.get_value(iter,2);
+			if (model.get_value(iter,3)) {
+				cell.foreground = "#000000";
+			} else {
+				cell.foreground = "#aaaaaa";
+			}
+		});
 		this._treeView.insert_column(col1,0);
 		this._treeView.insert_column(col2,1);
 		this._treeView.expand_all();
@@ -161,11 +189,14 @@ class cwconf {
 		
 		//sequence model
 		this._seq = new Gtk.TreeStore();
-		this._seq.set_column_types ([ GObject.TYPE_STRING ]);
+		this._seq.set_column_types ([
+			GObject.TYPE_STRING,
+			GObject.TYPE_BOOLEAN,
+			GObject.TYPE_BOOLEAN ]);
 		let seqSlots = new Array();
 		for (let i=1; i<=10; i++) {
 			seqSlots[i] = this._seq.append(null);
-			this._seq.set(seqSlots[i],[0],["Slot "+i+":"]);
+			this._seq.set(seqSlots[i],[0,1,2],["Slot "+i+":",true,true]);
 		}
 		for (let i=0; i < this.conf.events.length; i++) {
 			this._buildUI_seq(this.conf.events[i],this._seq,seqSlots,"",0);
@@ -184,7 +215,14 @@ class cwconf {
 			expand: true });
 		let slot = new Gtk.CellRendererText();
 		col3.pack_start(slot,true);
-		col3.add_attribute(slot,"text",0);
+		col3.set_cell_data_func(slot, function (col,cell,model,iter) {
+			cell.text = model.get_value(iter,0);
+			if (model.get_value(iter,1)) {
+				cell.foreground = "#000000";
+			} else {
+				cell.foreground = "#aaaaaa";
+			}
+		});
 		this._seqView.insert_column(col3,0);
 		this._seqView.expand_all();
 		this._seqView.set_show_expanders(false);
