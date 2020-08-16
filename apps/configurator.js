@@ -144,9 +144,9 @@ class cwconf {
 				cell.visible = false;
 			}
 			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.foreground = "#000000";
+				cell.foreground = "rgba(0,0,0,1)";
 			} else {
-				cell.foreground = "#aaaaaa";
+				cell.foreground = "rgba(0,0,0,0.3)";
 			}
 		});
 		col1.set_cell_data_func(txt, function (col,cell,model,iter) {
@@ -157,17 +157,17 @@ class cwconf {
 				cell.weight = Pango.Weight.NORMAL;
 			}
 			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.foreground = "#000000";
+				cell.foreground = "rgba(0,0,0,1)";
 			} else {
-				cell.foreground = "#aaaaaa";
+				cell.foreground = "rgba(0,0,0,0.3)";
 			}
 		});
 		col2.set_cell_data_func(tgl, function (col,cell,model,iter) {
 			cell.active = model.get_value(iter,2);
 			if (model.get_value(iter,3)) {
-				cell.foreground = "#000000";
+				cell.foreground = "rgba(0,0,0,1)";
 			} else {
-				cell.foreground = "#aaaaaa";
+				cell.foreground = "rgba(0,0,0,0.3)";
 			}
 		});
 		this._treeView.insert_column(col1,0);
@@ -217,11 +217,11 @@ class cwconf {
 		col3.pack_start(slot,true);
 		col3.set_cell_data_func(slot, function (col,cell,model,iter) {
 			cell.text = model.get_value(iter,0);
-			if (model.get_value(iter,1)) {
-				cell.foreground = "#000000";
+			/*if (model.get_value(iter,1)) {
+				cell.foreground = "rgba(0,0,0,1)";
 			} else {
-				cell.foreground = "#aaaaaa";
-			}
+				cell.foreground = "rgba(0,0,0,0.3)";
+			}*/
 		});
 		this._seqView.insert_column(col3,0);
 		this._seqView.expand_all();
