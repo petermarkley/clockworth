@@ -60,8 +60,8 @@ class cwconf {
 		this._window = new Gtk.ApplicationWindow  ({
 			application: this.application,
 			title: "Clockworth Configurator",
-			default_height: 200,
-			default_width: 400,
+			default_width: 1200,
+			default_height: 800,
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
 		
@@ -82,10 +82,15 @@ class cwconf {
 		
 		//view
 		this._view = new Gtk.TreeView ({
-			expand: true,
-			model: this._tree });
-		let col1 = new Gtk.TreeViewColumn({ title: "Event" });
-		let col2 = new Gtk.TreeViewColumn({ title: "Enable" });
+			expand: false,
+			model: this._tree,
+			enable_grid_lines: true,
+			enable_tree_lines: true });
+		let col1 = new Gtk.TreeViewColumn({
+			title: "Event",
+			expand: true });
+		let col2 = new Gtk.TreeViewColumn({
+			title: "Enable" });
 		let txt  = new Gtk.CellRendererText();
 		let tgl  = new Gtk.CellRendererToggle();
 		col1.pack_start(txt,true);
@@ -94,7 +99,9 @@ class cwconf {
 		col2.add_attribute(tgl,"active",1);
 		this._view.insert_column(col1,0);
 		this._view.insert_column(col2,1);
-		this._grid.attach (this._view, 0, 1, 1, 1);
+		this._tscroll = new Gtk.ScrolledWindow({ min_content_height: 300 });
+		this._tscroll.add(this._view);
+		this._grid.attach (this._tscroll, 0, 1, 1, 1);
 		
 		this._window.add (this._grid);
 		this._window.show_all();
