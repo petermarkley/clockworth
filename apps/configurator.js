@@ -40,7 +40,7 @@ class cwconf {
 		switch (data.type) {
 			case "group":
 				iter = model.append(parent);
-				model.set(iter,[0,1],["(Group) "+data.label,data.enable]);
+				model.set(iter,[0,1,2],[true,data.label,data.enable]);
 				for (let i=0; i < data.members.length; i++) {
 					if (!this._buildUI_tree(data.members[i],model,iter,depth+1))
 						return false;
@@ -48,7 +48,7 @@ class cwconf {
 			break;
 			case "event":
 				iter = model.append(parent);
-				model.set(iter,[0,1],[data.label,data.enable]);
+				model.set(iter,[0,1,2],[false,data.label,data.enable]);
 			break;
 		}
 		return true;
@@ -89,15 +89,24 @@ class cwconf {
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
 		
-		this._grid = new Gtk.Grid ({row_spacing: 20});
-		this._image = new Gtk.Image ({
-			file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png',
+		this._grid = new Gtk.Grid ({
+			row_spacing: 20,
 			hexpand: true });
+		this._image = new Gtk.Image ({ file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png' });
 		this._grid.attach (this._image, 0, 0, 2, 1);
+		
+		//tree grid
+		this._treeGrid = new Gtk.Grid({
+			row_spacing: 10,
+			hexpand: true });
+		this._treeLabel = new Gtk.Label({label: "Chime Events"});
+		this._treeGrid.attach (this._treeLabel, 0, 0, 1, 1);
+		this._grid.attach (this._treeGrid, 0, 1, 1, 1);
 		
 		//tree model
 		this._tree = new Gtk.TreeStore();
 		this._tree.set_column_types ([
+			GObject.TYPE_BOOLEAN,
             GObject.TYPE_STRING,
             GObject.TYPE_BOOLEAN]);
 		for (let i=0; i < this.conf.events.length; i++) {
@@ -106,7 +115,7 @@ class cwconf {
 		
 		//tree view
 		this._treeView = new Gtk.TreeView ({
-			expand: false,
+			hexpand: true,
 			model: this._tree,
 			enable_grid_lines: true,
 			enable_tree_lines: true });
@@ -115,12 +124,24 @@ class cwconf {
 			expand: true });
 		let col2 = new Gtk.TreeViewColumn({
 			title: "Enable" });
-		let txt  = new Gtk.CellRendererText();
-		let tgl  = new Gtk.CellRendererToggle();
+		let grp  = new Gtk.CellRendererText({
+			editable: false });
+		let txt  = new Gtk.CellRendererText({ editable: true });
+		let tgl  = new Gtk.CellRendererToggle({ activatable: true });
+		col1.pack_start(grp,false);
 		col1.pack_start(txt,true);
 		col2.pack_start(tgl,true);
-		col1.add_attribute(txt,"text",0);
-		col2.add_attribute(tgl,"active",1);
+		col1.set_cell_data_func(grp, function (col,cell,model,iter) {
+			if (model.get_value(iter,0)) {
+				cell.text = "(Group) ";
+				cell.visible = true;
+			} else {
+				cell.text = "";
+				cell.visible = false;
+			}
+		});
+		col1.add_attribute(txt,"text",1);
+		col2.add_attribute(tgl,"active",2);
 		this._treeView.insert_column(col1,0);
 		this._treeView.insert_column(col2,1);
 		this._treeView.expand_all();
@@ -128,7 +149,15 @@ class cwconf {
 			min_content_height: 300,
 			margin_right: 10 });
 		this._tscroll.add(this._treeView);
-		this._grid.attach (this._tscroll, 0, 1, 1, 1);
+		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
+		
+		//sequence grid
+		this._seqGrid = new Gtk.Grid({
+			row_spacing: 10,
+			hexpand: true });
+		this._seqLabel = new Gtk.Label({label: "Collision Sequence"});
+		this._seqGrid.attach (this._seqLabel, 0, 0, 1, 1);
+		this._grid.attach (this._seqGrid, 1, 1, 1, 1);
 		
 		//sequence model
 		this._seq = new Gtk.TreeStore();
@@ -144,7 +173,7 @@ class cwconf {
 		
 		//sequence view
 		this._seqView = new Gtk.TreeView ({
-			expand: false,
+			hexpand: true,
 			model: this._seq,
 			enable_grid_lines: false,
 			enable_tree_lines: false,
@@ -163,7 +192,7 @@ class cwconf {
 			min_content_height: 300,
 			margin_left: 10 });
 		this._sscroll.add(this._seqView);
-		this._grid.attach (this._sscroll, 1, 1, 1, 1);
+		this._seqGrid.attach (this._sscroll, 0, 1, 1, 1);
 		
 		this._window.add (this._grid);
 		this._window.show_all();
