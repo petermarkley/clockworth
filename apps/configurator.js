@@ -7,6 +7,8 @@ const ByteArray = imports.byteArray;
 const GObject = imports.gi.GObject;
 const Pango = imports.gi.Pango;
 
+const MAX_RECURSION_DEPTH = 100;
+
 class cwconf {
 	// Create the application itself
 	constructor() {
@@ -28,23 +30,28 @@ class cwconf {
 		this._buildUI();
 	}
 	
-	_buildUI_node(d, depth) {
-		switch (d.type) {
+	_buildUI_node(data, model, parent, depth) {
+		if (depth > MAX_RECURSION_DEPTH) {
+			log("reached max recursion depth");
+			this.application.quit();
+			return false;
+		}
+		let iter = null;
+		switch (data.type) {
 			case "group":
-				let expander = new Gtk.Expander ({ label: d.label });
-				let contents = new Gtk.Grid ({row_spacing: 20, margin_left: 30, margin_top: 20});
-				let i;
-				for (i=0; i < d.members.length; i++) {
-					contents.attach(this._buildUI_node(d.members[i],depth+1),0,i,1,1);
+				iter = model.append(parent);
+				model.set(iter,[0,1],[data.enable,"(Group) "+data.label]);
+				for (let i=0; i < data.members.length; i++) {
+					if (!this._buildUI_node(data.members[i],model,iter,depth+1))
+						return false;
 				}
-				expander.add(contents);
-				return expander;
 			break;
 			case "event":
-				let label = new Gtk.Label ({ label: d.label });
-				return label;
+				iter = model.append(parent);
+				model.set(iter,[0,1],[data.enable,data.label]);
 			break;
 		}
+		return true;
 	}
 	
 	// Build the application's UI
@@ -63,10 +70,6 @@ class cwconf {
 			file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png',
 			hexpand: true });
 		this._grid.attach (this._image, 0, 0, 1, 1);
-		/*let i;
-		for (i=0; i < this.conf.events.length; i++) {
-			this._grid.attach (this._buildUI_node(this.conf.events[i],0), 0,i+1,1,1);
-		}*/
 		
 		//model
 		this._tree = new Gtk.TreeStore();
@@ -74,9 +77,7 @@ class cwconf {
             GObject.TYPE_BOOLEAN,
             GObject.TYPE_STRING]);
 		for (let i=0; i < this.conf.events.length; i++) {
-			let iter = this._tree.append(null);
-			this._tree.set(iter,[0,1],[this.conf.events[i].enable,this.conf.events[i].label]);
-			
+			this._buildUI_node(this.conf.events[i],this._tree,null,0);
 		}
 		
 		//view
@@ -85,10 +86,11 @@ class cwconf {
 			model: this._tree });
 		let col1 = new Gtk.TreeViewColumn({ title: "Enable" });
 		let col2 = new Gtk.TreeViewColumn({ title: "Event" });
+		let tgl  = new Gtk.CellRendererToggle();
 		let txt  = new Gtk.CellRendererText();
-		col1.pack_start(txt,true);
+		col1.pack_start(tgl,true);
 		col2.pack_start(txt,true);
-		col1.add_attribute(txt,"text",0);
+		col1.add_attribute(tgl,"active",0);
 		col2.add_attribute(txt,"text",1);
 		this._view.insert_column(col1,0);
 		this._view.insert_column(col2,1);
