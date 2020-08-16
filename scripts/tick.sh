@@ -26,8 +26,6 @@
 # 
 #----------------------------------------------------------------------
 
-CONFIG_FILE=~/.clockworth_config
-
 DIR="$( cd "$( dirname "$( dirname "$0" )" )" && pwd )"
 PLAY=`command -v aplay`" -q" #for Linux
 if [ $? -eq 1 ] ; then
@@ -35,15 +33,6 @@ if [ $? -eq 1 ] ; then
 fi
 
 while true ; do
-	if [ -e "$CONFIG_FILE" ] ; then
-		OPT=`grep -i "tick=" $CONFIG_FILE | cut -d= -f2`
-		if [ -n "$OPT" ] ; then
-			shopt -s nocasematch
-			if [[ "$OPT" == "off" || "$OPT" == "no" || "$OPT" == "false" ]] ; then
-				exit
-			fi
-		fi
-	fi
 	T=$(( $( date +%s ) / 2 + 1 ))
 	$PLAY "${DIR}/sounds/tick_tock-var$(( ( RANDOM % 5 ) + 1 )).wav"
 	while [ `date +%s` -lt $(( $T * 2 )) ] ; do sleep 0.01 ; done
