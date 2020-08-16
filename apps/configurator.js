@@ -26,6 +26,25 @@ class cwconf {
 		this._buildUI();
 	}
 	
+	_buildUI_node(d, depth) {
+		switch (d.type) {
+			case "group":
+				let expander = new Gtk.Expander ({ label: d.label });
+				let contents = new Gtk.Grid ({row_spacing: 20, margin_left: 30, margin_top: 20});
+				let i;
+				for (i=0; i < d.members.length; i++) {
+					contents.attach(this._buildUI_node(d.members[i],depth+1),0,i,1,1);
+				}
+				expander.add(contents);
+				return expander;
+			break;
+			case "event":
+				let label = new Gtk.Label ({ label: d.label });
+				return label;
+			break;
+		}
+	}
+	
 	// Build the application's UI
 	_buildUI() {
 		// Create the application window
@@ -37,25 +56,23 @@ class cwconf {
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
 		
-		// Create an image
 		this._image = new Gtk.Image ({
 			file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png',
 			hexpand: true });
-		
-		// Create a label
-		this._label = new Gtk.Label ({ label: "Your location is: "+this.conf.location });
-		
-		// Create the Grid
+		//this._label = new Gtk.Label ({ label: this.conf.location });
+		//this._expander = new Gtk.Expander ({ label: "Location" });
 		this._grid = new Gtk.Grid ({row_spacing: 20});
 		
-		// Attach the image and label to the grid
-		this._grid.attach (this._image, 0, 0, 1, 1);
-		this._grid.attach (this._label, 0, 1, 1, 1);
+		//this._expander.add(this._label);
 		
-		// Add the grid to the window
+		//this._grid.attach (this._image, 0, 0, 1, 1);
+		//this._grid.attach (this._expander, 0, 1, 1, 1);
+		let i;
+		for (i=0; i < this.conf.events.length; i++) {
+			this._grid.attach (this._buildUI_node(this.conf.events[i],0), 0,i+1,1,1);
+		}
+		
 		this._window.add (this._grid);
-		
-		// Show the window and all child widgets
 		this._window.show_all();
 	}
 	
