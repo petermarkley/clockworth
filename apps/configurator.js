@@ -89,6 +89,11 @@ class cwconf {
 			default_height: 800,
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
+		this._css   = new Gtk.CssProvider();
+		this._css.load_from_data(
+			".pane_header {font-size: 1.2em;} "+
+			".cell_grey {opacity: 0.5;}");
+		let style = null;
 		
 		this._grid = new Gtk.Grid ({
 			row_spacing: 20,
@@ -101,6 +106,9 @@ class cwconf {
 			row_spacing: 10,
 			hexpand: true });
 		this._treeLabel = new Gtk.Label({label: "Chime Events"});
+		style = this._treeLabel.get_style_context();
+		style.add_class("pane_header");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._treeGrid.attach (this._treeLabel, 0, 0, 1, 1);
 		this._grid.attach (this._treeGrid, 0, 1, 1, 1);
 		
@@ -181,6 +189,9 @@ class cwconf {
 		this._seqLine = new Gtk.Grid({
 			column_spacing: 10,
 			halign: Gtk.Align.CENTER });
+		style = this._seqLine.get_style_context();
+		style.add_class("pane_header");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._seqInfo = new Gtk.Image ({
 			stock: 'gtk-info',
 			tooltip_text: "Procedure in case two or more chime events \u201ccollide,\u201d i.e. match on the same minute.\n\nEach minute that the chime script executes, all ten slots are computed in sequence. During this time, only the last match from each slot will be played.\n\nOr, put another way:\n\nIf two matching events share a slot, the latter will replace the other. Otherwise, if they occupy different slots, they will both play in order." });
