@@ -8,6 +8,13 @@ const GObject = imports.gi.GObject;
 const Pango = imports.gi.Pango;
 
 const MAX_RECURSION_DEPTH = 100;
+/* we are hard-coding for light-mode colors, because
+   apparently there's no color-agnostic way in the
+   whole universe to change opacity of individual
+   TreeView cells */
+const TEXT_R = 0.0;
+const TEXT_G = 0.0;
+const TEXT_B = 0.0;
 
 class cwconf {
 	// Create the application itself
@@ -140,9 +147,9 @@ class cwconf {
 		col1.set_cell_data_func(tgl, function (col,cell,model,iter) {
 			cell.active = model.get_value(iter,2);
 			if (model.get_value(iter,3)) {
-				cell.foreground = "rgba(0,0,0,1)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
 			} else {
-				cell.foreground = "rgba(0,0,0,0.3)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
 			}
 		});
 		/*col1.set_cell_data_func(grp, function (col,cell,model,iter) {
@@ -156,9 +163,9 @@ class cwconf {
 				cell.visible = false;
 			}
 			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.foreground = "rgba(0,0,0,1)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
 			} else {
-				cell.foreground = "rgba(0,0,0,0.3)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
 			}
 		});*/
 		col1.set_cell_data_func(txt, function (col,cell,model,iter) {
@@ -169,9 +176,9 @@ class cwconf {
 				cell.weight = Pango.Weight.NORMAL;
 			}
 			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.foreground = "rgba(0,0,0,1)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
 			} else {
-				cell.foreground = "rgba(0,0,0,0.3)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
 			}
 		});
 		this._treeView.insert_column(col1,0);
@@ -232,9 +239,9 @@ class cwconf {
 		col3.set_cell_data_func(slot, function (col,cell,model,iter) {
 			cell.text = model.get_value(iter,0);
 			/*if (model.get_value(iter,1)) {
-				cell.foreground = "rgba(0,0,0,1)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
 			} else {
-				cell.foreground = "rgba(0,0,0,0.3)";
+				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
 			}*/
 		});
 		this._seqView.insert_column(col3,0);
