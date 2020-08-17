@@ -120,18 +120,23 @@ class cwconf {
 			hexpand: true,
 			model: this._tree,
 			enable_grid_lines: true,
-			enable_tree_lines: true });
-		let col1 = new Gtk.TreeViewColumn({
-			title: "Event",
-			expand: true });
-		let col2 = new Gtk.TreeViewColumn({
-			title: "Enable" });
+			enable_tree_lines: true,
+			headers_visible: false });
+		let col1 = new Gtk.TreeViewColumn({ expand: true });
 		//let grp  = new Gtk.CellRendererText({ editable: false });
-		let txt  = new Gtk.CellRendererText({ editable: true });
 		let tgl  = new Gtk.CellRendererToggle({ activatable: true });
+		let txt  = new Gtk.CellRendererText({ editable: true });
+		col1.pack_start(tgl,false);
 		//col1.pack_start(grp,false);
 		col1.pack_start(txt,true);
-		col2.pack_start(tgl,true);
+		col1.set_cell_data_func(tgl, function (col,cell,model,iter) {
+			cell.active = model.get_value(iter,2);
+			if (model.get_value(iter,3)) {
+				cell.foreground = "rgba(0,0,0,1)";
+			} else {
+				cell.foreground = "rgba(0,0,0,0.3)";
+			}
+		});
 		/*col1.set_cell_data_func(grp, function (col,cell,model,iter) {
 			if (model.get_value(iter,0)) {
 				cell.text = "(Group) ";
@@ -161,16 +166,7 @@ class cwconf {
 				cell.foreground = "rgba(0,0,0,0.3)";
 			}
 		});
-		col2.set_cell_data_func(tgl, function (col,cell,model,iter) {
-			cell.active = model.get_value(iter,2);
-			if (model.get_value(iter,3)) {
-				cell.foreground = "rgba(0,0,0,1)";
-			} else {
-				cell.foreground = "rgba(0,0,0,0.3)";
-			}
-		});
 		this._treeView.insert_column(col1,0);
-		this._treeView.insert_column(col2,1);
 		this._treeView.expand_all();
 		this._tscroll = new Gtk.ScrolledWindow({
 			min_content_height: 300,
