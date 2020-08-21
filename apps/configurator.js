@@ -230,7 +230,6 @@ class cwconf {
 				expand: false });
 			div.attach (label, 0, 0, 1, 1);
 			let view = new Gtk.TreeView({
-				margin_left: 30,
 				hexpand: true,
 				model: this._tree,
 				enable_grid_lines: false,
@@ -246,6 +245,7 @@ class cwconf {
 				if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
 					cell.text = model.get_value(iter,5);
 					cell.visible = true;
+					cell.margin_left = 30;
 				} else {
 					cell.text = "";
 					cell.visible = false;
