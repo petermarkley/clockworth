@@ -226,7 +226,8 @@ class cwconf {
 			this._slots.attach (div, 0, i-1, 1, 1);
 			let label = new Gtk.Label({
 				label: "Slot "+i,
-				halign: 0 });
+				halign: Gtk.Align.START,
+				expand: false });
 			div.attach (label, 0, 0, 1, 1);
 			let view = new Gtk.TreeView({
 				margin_left: 30,
