@@ -123,12 +123,12 @@ class cwconf {
 		//tree model
 		this._tree = new Gtk.TreeStore();
 		this._tree.set_column_types ([
-			GObject.TYPE_BOOLEAN,
-            GObject.TYPE_STRING,
-            GObject.TYPE_BOOLEAN,
-            GObject.TYPE_BOOLEAN,
-            GObject.TYPE_INT,
-            GObject.TYPE_STRING ]);
+			GObject.TYPE_BOOLEAN,   //is a group?
+            GObject.TYPE_STRING,    //label
+            GObject.TYPE_BOOLEAN,   //enable?
+            GObject.TYPE_BOOLEAN,   //viable?
+            GObject.TYPE_INT,       //sequence slot
+            GObject.TYPE_STRING ]); //path
 		for (let i=0; i < this.conf.events.length; i++) {
 			this._buildUI_tree(this.conf.events[i],this._tree,null,"",0);
 		}
@@ -229,9 +229,59 @@ class cwconf {
 				halign: Gtk.Align.START,
 				expand: false });
 			div.attach (label, 0, 0, 1, 1);
+			let filter = this._tree.filter_new(null);
+			filter.set_modify_func([
+				GObject.TYPE_BOOLEAN,  //visible?
+				GObject.TYPE_STRING,   //label
+				GObject.TYPE_STRING,   //path
+				GObject.TYPE_INT,      //sequence slot
+				GObject.TYPE_BOOLEAN,  //enable?
+				GObject.TYPE_BOOLEAN], //viable?
+			function (f_model,f_iter,col) {
+				let iter = f_model.convert_iter_to_child_iter(f_iter);
+				let model = f_model.get_model();
+				let value = new GObject.Value();
+				switch (col) {
+					case 0:
+						value.init(GObject.TYPE_BOOLEAN);
+						value.set_boolean(!model.get_value(iter,0) && model.get_value(iter,4) == i);
+					break;
+					case 1:
+						value.init(GObject.TYPE_STRING);
+						value.set_string(model.get_value(iter,1));
+					break;
+					case 2:
+						value.init(GObject.TYPE_STRING);
+						value.set_string(model.get_value(iter,5));
+					break;
+					case 3:
+						value.init(GObject.TYPE_INT);
+						value.set_int(model.get_value(iter,4));
+					break;
+					case 4:
+						value.init(GObject.TYPE_BOOLEAN);
+						value.set_boolean(model.get_value(iter,2));
+					break;
+					case 5:
+						value.init(GObject.TYPE_BOOLEAN);
+						value.set_boolean(model.get_value(iter,3));
+					break;
+				}
+				return value;
+			});
+			/*filter.set_visible_func(function (f_model,f_iter) {
+				iter = f_model.convert_iter_to_child_iter(f_iter);
+				model = f_model.get_model();
+				if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
+					return true;
+				} else {
+					return false;
+				}
+			});*/
+			filter.set_visible_column(0);
 			let view = new Gtk.TreeView({
 				hexpand: true,
-				model: this._tree,
+				model: filter,
 				enable_grid_lines: false,
 				enable_tree_lines: false,
 				headers_visible: false,
@@ -242,15 +292,17 @@ class cwconf {
 			let cell = new Gtk.CellRendererText();
 			col.pack_start(cell,true);
 			col.set_cell_data_func(cell, function (col,cell,model,iter) {
-				if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
+				/*if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
 					cell.text = model.get_value(iter,5);
 					cell.visible = true;
 					cell.margin_left = 30;
 				} else {
 					cell.text = "";
 					cell.visible = false;
-				}
+				}*/
+				cell.text = "hello, world";
 			});
+			//col.add_attribute(cell,"text",2);
 			view.insert_column(col,0);
 			view.expand_all();
 			view.set_show_expanders(false);
