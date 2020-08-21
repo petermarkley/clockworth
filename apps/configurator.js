@@ -37,33 +37,34 @@ class cwconf {
 		this._buildUI();
 	}
 	
-	_buildUI_tree(data, model, parent, depth) {
+	_buildUI_tree(data, model, parent, path, depth) {
 		if (depth > MAX_RECURSION_DEPTH) {
 			log("reached max recursion depth");
 			this.application.quit();
 			return false;
 		}
 		let iter = null;
+		let label = (path.length>0?path+" \u2192 "+data.label:data.label);
 		let viable = true;
 		if (parent) viable = model.get_value(parent,2) && model.get_value(parent,3);
 		switch (data.type) {
 			case "group":
 				iter = model.append(parent);
-				model.set(iter,[0,1,2,3],[true,data.label,data.enable,viable]);
+				model.set(iter,[0,1,2,3,4,5],[true,data.label,data.enable,viable,0,label]);
 				for (let i=0; i < data.members.length; i++) {
-					if (!this._buildUI_tree(data.members[i],model,iter,depth+1))
+					if (!this._buildUI_tree(data.members[i],model,iter,label,depth+1))
 						return false;
 				}
 			break;
 			case "event":
 				iter = model.append(parent);
-				model.set(iter,[0,1,2,3],[false,data.label,data.enable,viable]);
+				model.set(iter,[0,1,2,3,4,5],[false,data.label,data.enable,viable,data.sequence,label]);
 			break;
 		}
 		return true;
 	}
 	
-	_buildUI_seq(data, model, slots, path, depth) {
+	/*_buildUI_seq(data, model, slots, path, depth) {
 		if (depth > MAX_RECURSION_DEPTH) {
 			log("reached max recursion depth");
 			this.application.quit();
@@ -84,7 +85,7 @@ class cwconf {
 			break;
 		}
 		return true;
-	}
+	}*/
 	
 	// Build the application's UI
 	_buildUI() {
@@ -125,9 +126,11 @@ class cwconf {
 			GObject.TYPE_BOOLEAN,
             GObject.TYPE_STRING,
             GObject.TYPE_BOOLEAN,
-            GObject.TYPE_BOOLEAN ]);
+            GObject.TYPE_BOOLEAN,
+            GObject.TYPE_INT,
+            GObject.TYPE_STRING ]);
 		for (let i=0; i < this.conf.events.length; i++) {
-			this._buildUI_tree(this.conf.events[i],this._tree,null,0);
+			this._buildUI_tree(this.conf.events[i],this._tree,null,"",0);
 		}
 		
 		//tree view
@@ -207,9 +210,54 @@ class cwconf {
 		this._seqLine.attach (this._seqInfo, 1, 0, 1, 1);
 		this._seqGrid.attach (this._seqLine, 0, 0, 1, 1);
 		this._grid.attach (this._seqGrid, 1, 1, 1, 1);
+		this._sscroll = new Gtk.ScrolledWindow({ 
+			min_content_height: 300,
+			margin_left: 10 });
+		this._slots = new Gtk.Grid({ 
+			row_spacing: 10,
+			hexpand: true });
+		this._sscroll.add(this._slots);
+		this._seqGrid.attach (this._sscroll, 0, 1, 1, 1);
+		
+		//sequence view
+		for (let i=1; i<=10; i++) {
+			let div = new Gtk.Grid({
+				row_spacing: 2 });
+			this._slots.attach (div, 0, i-1, 1, 1);
+			let label = new Gtk.Label({
+				label: "Slot "+i,
+				halign: 0 });
+			div.attach (label, 0, 0, 1, 1);
+			let view = new Gtk.TreeView({
+				margin_left: 30,
+				hexpand: true,
+				model: this._tree,
+				enable_grid_lines: false,
+				enable_tree_lines: false,
+				headers_visible: false,
+				level_indentation: 0 });
+			let col = new Gtk.TreeViewColumn({
+				title: "Event",
+				expand: true });
+			let cell = new Gtk.CellRendererText();
+			col.pack_start(cell,true);
+			col.set_cell_data_func(cell, function (col,cell,model,iter) {
+				if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
+					cell.text = model.get_value(iter,5);
+					cell.visible = true;
+				} else {
+					cell.text = "";
+					cell.visible = false;
+				}
+			});
+			view.insert_column(col,0);
+			view.expand_all();
+			view.set_show_expanders(false);
+			div.attach (view, 0, 1, 1, 1);
+		}
 		
 		//sequence model
-		this._seq = new Gtk.TreeStore();
+		/*this._seq = new Gtk.TreeStore();
 		this._seq.set_column_types ([
 			GObject.TYPE_STRING,
 			GObject.TYPE_BOOLEAN,
@@ -221,10 +269,10 @@ class cwconf {
 		}
 		for (let i=0; i < this.conf.events.length; i++) {
 			this._buildUI_seq(this.conf.events[i],this._seq,seqSlots,"",0);
-		}
+		}*/
 		
 		//sequence view
-		this._seqView = new Gtk.TreeView ({
+		/*this._seqView = new Gtk.TreeView ({
 			hexpand: true,
 			model: this._seq,
 			enable_grid_lines: false,
@@ -238,11 +286,6 @@ class cwconf {
 		col3.pack_start(slot,true);
 		col3.set_cell_data_func(slot, function (col,cell,model,iter) {
 			cell.text = model.get_value(iter,0);
-			/*if (model.get_value(iter,1)) {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
-			} else {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
-			}*/
 		});
 		this._seqView.insert_column(col3,0);
 		this._seqView.expand_all();
@@ -251,7 +294,7 @@ class cwconf {
 			min_content_height: 300,
 			margin_left: 10 });
 		this._sscroll.add(this._seqView);
-		this._seqGrid.attach (this._sscroll, 0, 1, 1, 1);
+		this._seqGrid.attach (this._sscroll, 0, 1, 1, 1);*/
 		
 		this._window.add (this._grid);
 		this._window.show_all();
