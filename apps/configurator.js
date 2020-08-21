@@ -99,8 +99,7 @@ class cwconf {
 			window_position: Gtk.WindowPosition.CENTER });
 		this._css   = new Gtk.CssProvider();
 		this._css.load_from_data(
-			".pane_header {font-size: 1.2em;} "+
-			".cell_grey {opacity: 0.5;}");
+			".pane_header {font-size: 1.2em;} ");
 		let style = null;
 		
 		this._grid = new Gtk.Grid ({
@@ -281,7 +280,7 @@ class cwconf {
 			filter.set_visible_column(0);
 			let view = new Gtk.TreeView({
 				hexpand: true,
-				model: filter,
+				model: this._tree,
 				enable_grid_lines: false,
 				enable_tree_lines: false,
 				headers_visible: false,
@@ -292,8 +291,8 @@ class cwconf {
 			let cell = new Gtk.CellRendererText();
 			col.pack_start(cell,true);
 			col.set_cell_data_func(cell, function (col,cell,model,iter) {
-				cell.text = "hello, world";
-				//cell.text = model.get_value(iter,2);
+				//cell.text = "hello, world";
+				cell.text = "\t"+model.get_value(iter,5);
 			});
 			//col.add_attribute(cell,"text",2);
 			view.insert_column(col,0);
