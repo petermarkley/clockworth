@@ -292,15 +292,8 @@ class cwconf {
 			let cell = new Gtk.CellRendererText();
 			col.pack_start(cell,true);
 			col.set_cell_data_func(cell, function (col,cell,model,iter) {
-				/*if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
-					cell.text = model.get_value(iter,5);
-					cell.visible = true;
-					cell.margin_left = 30;
-				} else {
-					cell.text = "";
-					cell.visible = false;
-				}*/
 				cell.text = "hello, world";
+				//cell.text = model.get_value(iter,2);
 			});
 			//col.add_attribute(cell,"text",2);
 			view.insert_column(col,0);
