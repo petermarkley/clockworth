@@ -269,11 +269,15 @@ class cwconf {
 				return value;
 			});*/
 			filter.set_visible_func(function (model,iter) {
-				if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
-					return true;
-				} else {
-					return false;
+				let g = model.get_value(iter,0);
+				let s = model.get_value(iter,4);
+				let r = false;
+				log("g: "+g+",  s: "+s);
+				log("hello world: "+(!g)+" && ("+s+" == 3: "+(s == 3)+")  ::  "+((!g) && (s == 3)));
+				if (!g && (s == 3)) {
+					r = true;
 				}
+				return r;
 			});
 			//filter.set_visible_column(0);
 			let view = new Gtk.TreeView({
