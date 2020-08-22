@@ -269,14 +269,11 @@ class cwconf {
 				return value;
 			});*/
 			filter.set_visible_func(function (model,iter) {
-				let g = model.get_value(iter,0);
-				let s = model.get_value(iter,4);
-				let r = false;
-				if (g || (s == i)) {
-					r = true;
+				if (model.get_value(iter,0) || model.get_value(iter,4) == i) {
+					return true;
+				} else {
+					return false;
 				}
-				log("g: "+g+",  s: "+s+", r: "+r);
-				return r;
 			});
 			let view = new Gtk.TreeView({
 				hexpand: true,
