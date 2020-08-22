@@ -272,13 +272,12 @@ class cwconf {
 				let g = model.get_value(iter,0);
 				let s = model.get_value(iter,4);
 				let r = false;
-				if (s){//(!g && (s == 3)) {
+				if (g || (s == i)) {
 					r = true;
 				}
 				log("g: "+g+",  s: "+s+", r: "+r);
 				return r;
 			});
-			//filter.set_visible_column(0);
 			let view = new Gtk.TreeView({
 				hexpand: true,
 				model: filter,
@@ -292,8 +291,13 @@ class cwconf {
 			let cell = new Gtk.CellRendererText();
 			col.pack_start(cell,true);
 			col.set_cell_data_func(cell, function (col,cell,model,iter) {
-				//cell.text = "hello, world";
-				cell.text = "\t"+model.get_value(iter,5);
+				if (!model.get_value(iter,0)) {
+					cell.text = "\t"+model.get_value(iter,5);
+					cell.visible = true;
+				} else {
+					cell.text = "";
+					cell.visible = false;
+				}
 			});
 			//col.add_attribute(cell,"text",2);
 			view.insert_column(col,0);
