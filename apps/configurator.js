@@ -229,7 +229,7 @@ class cwconf {
 				expand: false });
 			div.attach (label, 0, 0, 1, 1);
 			let filter = this._tree.filter_new(null);
-			filter.set_modify_func([
+			/*filter.set_modify_func([
 				GObject.TYPE_BOOLEAN,  //visible?
 				GObject.TYPE_STRING,   //label
 				GObject.TYPE_STRING,   //path
@@ -267,20 +267,18 @@ class cwconf {
 					break;
 				}
 				return value;
-			});
-			/*filter.set_visible_func(function (f_model,f_iter) {
-				iter = f_model.convert_iter_to_child_iter(f_iter);
-				model = f_model.get_model();
+			});*/
+			filter.set_visible_func(function (model,iter) {
 				if (!model.get_value(iter,0) && model.get_value(iter,4) == i) {
 					return true;
 				} else {
 					return false;
 				}
-			});*/
-			filter.set_visible_column(0);
+			});
+			//filter.set_visible_column(0);
 			let view = new Gtk.TreeView({
 				hexpand: true,
-				model: this._tree,
+				model: filter,
 				enable_grid_lines: false,
 				enable_tree_lines: false,
 				headers_visible: false,
