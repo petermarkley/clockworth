@@ -133,11 +133,9 @@ class cwconf {
 			enable_tree_lines: true,
 			headers_visible: false });
 		let col1 = new Gtk.TreeViewColumn({ expand: true });
-		//let grp  = new Gtk.CellRendererText({ editable: false });
 		let tgl  = new Gtk.CellRendererToggle({ activatable: true });
 		let txt  = new Gtk.CellRendererText({ editable: true });
 		col1.pack_start(tgl,false);
-		//col1.pack_start(grp,false);
 		col1.pack_start(txt,true);
 		col1.set_cell_data_func(tgl, function (col,cell,model,iter) {
 			cell.active = model.get_value(iter,2);
@@ -147,22 +145,6 @@ class cwconf {
 				cell.sensitive = false;
 			}
 		});
-		/*col1.set_cell_data_func(grp, function (col,cell,model,iter) {
-			if (model.get_value(iter,0)) {
-				cell.text = "(Group) ";
-				cell.weight = Pango.Weight.BOLD;
-				cell.visible = true;
-			} else {
-				cell.text = "";
-				cell.weight = Pango.Weight.NORMAL;
-				cell.visible = false;
-			}
-			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.sensitive = true;
-			} else {
-				cell.sensitive = false;
-			}
-		});*/
 		col1.set_cell_data_func(txt, function (col,cell,model,iter) {
 			cell.text = model.get_value(iter,1);
 			if (model.get_value(iter,0)) {
@@ -222,45 +204,6 @@ class cwconf {
 				expand: false });
 			div.attach (label, 0, 0, 1, 1);
 			let filter = this._tree.filter_new(null);
-			/*filter.set_modify_func([
-				GObject.TYPE_BOOLEAN,  //visible?
-				GObject.TYPE_STRING,   //label
-				GObject.TYPE_STRING,   //path
-				GObject.TYPE_INT,      //sequence slot
-				GObject.TYPE_BOOLEAN,  //enable?
-				GObject.TYPE_BOOLEAN], //viable?
-			function (f_model,f_iter,col) {
-				let iter = f_model.convert_iter_to_child_iter(f_iter);
-				let model = f_model.get_model();
-				let value = new GObject.Value();
-				switch (col) {
-					case 0:
-						value.init(GObject.TYPE_BOOLEAN);
-						value.set_boolean(!model.get_value(iter,0) && model.get_value(iter,4) == i);
-					break;
-					case 1:
-						value.init(GObject.TYPE_STRING);
-						value.set_string(model.get_value(iter,1));
-					break;
-					case 2:
-						value.init(GObject.TYPE_STRING);
-						value.set_string(model.get_value(iter,5));
-					break;
-					case 3:
-						value.init(GObject.TYPE_INT);
-						value.set_int(model.get_value(iter,4));
-					break;
-					case 4:
-						value.init(GObject.TYPE_BOOLEAN);
-						value.set_boolean(model.get_value(iter,2));
-					break;
-					case 5:
-						value.init(GObject.TYPE_BOOLEAN);
-						value.set_boolean(model.get_value(iter,3));
-					break;
-				}
-				return value;
-			});*/
 			filter.set_visible_func(function (model,iter) {
 				if (model.get_value(iter,0) || model.get_value(iter,4) == i) {
 					return true;
@@ -294,7 +237,6 @@ class cwconf {
 					cell.sensitive = false;
 				}
 			});
-			//col.add_attribute(cell,"text",2);
 			view.insert_column(col,0);
 			view.expand_all();
 			view.set_show_expanders(false);
