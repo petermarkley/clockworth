@@ -30,7 +30,7 @@ class cwconf {
 		this._buildUI();
 	}
 	
-	_buildUI_tree(data, model, parent, path, depth) {
+	_buildUI_tree(data, model, flat, parent, path, depth) {
 		if (depth > MAX_RECURSION_DEPTH) {
 			log("reached max recursion depth");
 			this.application.quit();
@@ -45,40 +45,20 @@ class cwconf {
 				iter = model.append(parent);
 				model.set(iter,[0,1,2,3,4,5],[true,data.label,data.enable,viable,0,label]);
 				for (let i=0; i < data.members.length; i++) {
-					if (!this._buildUI_tree(data.members[i],model,iter,label,depth+1))
+					if (!this._buildUI_tree(data.members[i],model,flat,iter,label,depth+1))
 						return false;
 				}
 			break;
 			case "event":
 				iter = model.append(parent);
 				model.set(iter,[0,1,2,3,4,5],[false,data.label,data.enable,viable,data.sequence,label]);
+				
+				iter = flat.append();
+				flat.set(iter,[0,1,2,3,4],[data.label,data.enable,viable,data.sequence,label]);
 			break;
 		}
 		return true;
 	}
-	
-	/*_buildUI_seq(data, model, slots, path, depth) {
-		if (depth > MAX_RECURSION_DEPTH) {
-			log("reached max recursion depth");
-			this.application.quit();
-			return false;
-		}
-		let label = (path.length>0?path+" \u2192 "+data.label:data.label);
-		let viable = true;
-		switch (data.type) {
-			case "group":
-				for (let i=0; i < data.members.length; i++) {
-					if (!this._buildUI_seq(data.members[i],model,slots,label,depth+1))
-						return false;
-				}
-			break;
-			case "event":
-				let iter = model.append(slots[data.sequence]);
-				model.set(iter,[0,1,2],[label,data.enable,viable]);
-			break;
-		}
-		return true;
-	}*/
 	
 	// Build the application's UI
 	_buildUI() {
@@ -116,13 +96,20 @@ class cwconf {
 		this._tree = new Gtk.TreeStore();
 		this._tree.set_column_types ([
 			GObject.TYPE_BOOLEAN,   //is a group?
-            GObject.TYPE_STRING,    //label
-            GObject.TYPE_BOOLEAN,   //enable?
-            GObject.TYPE_BOOLEAN,   //viable?
-            GObject.TYPE_INT,       //sequence slot
-            GObject.TYPE_STRING ]); //path
+			GObject.TYPE_STRING,    //label
+			GObject.TYPE_BOOLEAN,   //enable?
+			GObject.TYPE_BOOLEAN,   //viable?
+			GObject.TYPE_INT,       //sequence slot
+			GObject.TYPE_STRING ]); //path
+		this._tree_flat = new Gtk.ListStore();
+		this._tree_flat.set_column_types ([
+			GObject.TYPE_STRING,    //label
+			GObject.TYPE_BOOLEAN,   //enable?
+			GObject.TYPE_BOOLEAN,   //viable?
+			GObject.TYPE_INT,       //sequence slot
+			GObject.TYPE_STRING ]); //path
 		for (let i=0; i < this.conf.events.length; i++) {
-			this._buildUI_tree(this.conf.events[i],this._tree,null,"",0);
+			this._buildUI_tree(this.conf.events[i],this._tree,this._tree_flat,null,"",0);
 		}
 		
 		//tree view
@@ -203,9 +190,9 @@ class cwconf {
 				halign: Gtk.Align.START,
 				expand: false });
 			div.attach (label, 0, 0, 1, 1);
-			let filter = this._tree.filter_new(null);
+			let filter = this._tree_flat.filter_new(null);
 			filter.set_visible_func(function (model,iter) {
-				if (model.get_value(iter,0) || model.get_value(iter,4) == i) {
+				if (model.get_value(iter,3) == i) {
 					return true;
 				} else {
 					return false;
@@ -224,14 +211,8 @@ class cwconf {
 			let cell = new Gtk.CellRendererText();
 			col.pack_start(cell,true);
 			col.set_cell_data_func(cell, function (col,cell,model,iter) {
-				if (!model.get_value(iter,0)) {
-					cell.text = "\t"+model.get_value(iter,5);
-					cell.visible = true;
-				} else {
-					cell.text = "";
-					cell.visible = false;
-				}
-				if (model.get_value(iter,2) && model.get_value(iter,3)) {
+				cell.text = "\t"+model.get_value(iter,4);
+				if (model.get_value(iter,1) && model.get_value(iter,2)) {
 					cell.sensitive = true;
 				} else {
 					cell.sensitive = false;
@@ -242,46 +223,6 @@ class cwconf {
 			view.set_show_expanders(false);
 			div.attach (view, 0, 1, 1, 1);
 		}
-		
-		//sequence model
-		/*this._seq = new Gtk.TreeStore();
-		this._seq.set_column_types ([
-			GObject.TYPE_STRING,
-			GObject.TYPE_BOOLEAN,
-			GObject.TYPE_BOOLEAN ]);
-		let seqSlots = new Array();
-		for (let i=1; i<=10; i++) {
-			seqSlots[i] = this._seq.append(null);
-			this._seq.set(seqSlots[i],[0,1,2],["Slot "+i+":",true,true]);
-		}
-		for (let i=0; i < this.conf.events.length; i++) {
-			this._buildUI_seq(this.conf.events[i],this._seq,seqSlots,"",0);
-		}*/
-		
-		//sequence view
-		/*this._seqView = new Gtk.TreeView ({
-			hexpand: true,
-			model: this._seq,
-			enable_grid_lines: false,
-			enable_tree_lines: false,
-			headers_visible: false,
-			level_indentation: 30 });
-		let col3 = new Gtk.TreeViewColumn({
-			title: "Event",
-			expand: true });
-		let slot = new Gtk.CellRendererText();
-		col3.pack_start(slot,true);
-		col3.set_cell_data_func(slot, function (col,cell,model,iter) {
-			cell.text = model.get_value(iter,0);
-		});
-		this._seqView.insert_column(col3,0);
-		this._seqView.expand_all();
-		this._seqView.set_show_expanders(false);
-		this._sscroll = new Gtk.ScrolledWindow({
-			min_content_height: 300,
-			margin_left: 10 });
-		this._sscroll.add(this._seqView);
-		this._seqGrid.attach (this._sscroll, 0, 1, 1, 1);*/
 		
 		this._window.add (this._grid);
 		this._window.show_all();
