@@ -8,13 +8,6 @@ const GObject = imports.gi.GObject;
 const Pango = imports.gi.Pango;
 
 const MAX_RECURSION_DEPTH = 100;
-/* we are hard-coding for light-mode colors, because
-   apparently there's no color-agnostic way in the
-   whole universe to change opacity of individual
-   TreeView cells */
-const TEXT_R = 0.0;
-const TEXT_G = 0.0;
-const TEXT_B = 0.0;
 
 class cwconf {
 	// Create the application itself
@@ -149,9 +142,9 @@ class cwconf {
 		col1.set_cell_data_func(tgl, function (col,cell,model,iter) {
 			cell.active = model.get_value(iter,2);
 			if (model.get_value(iter,3)) {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
+				cell.sensitive = true;
 			} else {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
+				cell.sensitive = false;
 			}
 		});
 		/*col1.set_cell_data_func(grp, function (col,cell,model,iter) {
@@ -165,9 +158,9 @@ class cwconf {
 				cell.visible = false;
 			}
 			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
+				cell.sensitive = true;
 			} else {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
+				cell.sensitive = false;
 			}
 		});*/
 		col1.set_cell_data_func(txt, function (col,cell,model,iter) {
@@ -178,9 +171,9 @@ class cwconf {
 				cell.weight = Pango.Weight.NORMAL;
 			}
 			if (model.get_value(iter,2) && model.get_value(iter,3)) {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",1)";
+				cell.sensitive = true;
 			} else {
-				cell.foreground = "rgba("+TEXT_R+","+TEXT_G+","+TEXT_B+",0.3)";
+				cell.sensitive = false;
 			}
 		});
 		this._treeView.insert_column(col1,0);
@@ -294,6 +287,11 @@ class cwconf {
 				} else {
 					cell.text = "";
 					cell.visible = false;
+				}
+				if (model.get_value(iter,2) && model.get_value(iter,3)) {
+					cell.sensitive = true;
+				} else {
+					cell.sensitive = false;
 				}
 			});
 			//col.add_attribute(cell,"text",2);
