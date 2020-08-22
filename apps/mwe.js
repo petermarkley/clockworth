@@ -38,34 +38,29 @@ class mwe {
 		let iter2 = null;
 		let iter3 = null;
 		iter1 = this._model.append(null);
-		this._model.set(iter1,[0,1,2],[true,0,"westminster quarters"]);
+		this._model.set(iter1,[0,1,2],[true,0,"animals"]);
 			iter2 = this._model.append(iter1);
-			this._model.set(iter2,[0,1,2],[true,0,"quarter hours"]);
+			this._model.set(iter2,[0,1,2],[true,0,"scary"]);
 				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"first quarter"]);
+				this._model.set(iter3,[0,1,2],[false,3,"lions"]);
 				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"second quarter"]);
+				this._model.set(iter3,[0,1,2],[false,3,"tigers"]);
 				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"third quarter"]);
+				this._model.set(iter3,[0,1,2],[false,3,"bears"]);
 			iter2 = this._model.append(iter1);
-			this._model.set(iter2,[0,1,2],[true,0,"hours"]);
+			this._model.set(iter2,[0,1,2],[true,0,"friendly"]);
 				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"stroke of 1"]);
+				this._model.set(iter3,[0,1,2],[false,3,"frogs"]);
 				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"stroke of 2"]);
+				this._model.set(iter3,[0,1,2],[false,3,"birds"]);
 				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"stroke of 3"]);
-				iter3 = this._model.append(iter2);
-				this._model.set(iter3,[0,1,2],[false,3,"stroke of 4"]);
-				// etc. ...
+				this._model.set(iter3,[0,1,2],[false,3,"fish"]);
 		iter1 = this._model.append(null);
-		this._model.set(iter1,[0,1,2],[true,0,"sunrise & sunset"]);
+		this._model.set(iter1,[0,1,2],[true,0,"places"]);
 			iter2 = this._model.append(iter1);
-			this._model.set(iter2,[0,1,2],[false,7,"sunrise"]);
+			this._model.set(iter2,[0,1,2],[false,7,"paris"]);
 			iter2 = this._model.append(iter1);
-			this._model.set(iter2,[0,1,2],[false,7,"sunset"]);
-		iter1 = this._model.append(null);
-		this._model.set(iter1,[0,1,2],[true,0,"holidays"]);
+			this._model.set(iter2,[0,1,2],[false,7,"london"]);
 		
 		//set up filtered display
 		let filter = this._model.filter_new(null);
