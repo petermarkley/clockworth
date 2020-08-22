@@ -21,7 +21,7 @@ class mwe {
 		this._window = new Gtk.ApplicationWindow  ({
 			application: this.application,
 			title: "Minimum Working Example",
-			default_width: 600,
+			default_width: 300,
 			default_height: 400,
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
@@ -40,7 +40,7 @@ class mwe {
 		iter1 = this._model.append(null);
 		this._model.set(iter1,[0,1,2],[true,0,"animals"]);
 			iter2 = this._model.append(iter1);
-			this._model.set(iter2,[0,1,2],[true,0,"scary"]);
+			this._model.set(iter2,[0,1,2],[true,0,"scary animals"]);
 				iter3 = this._model.append(iter2);
 				this._model.set(iter3,[0,1,2],[false,3,"lions"]);
 				iter3 = this._model.append(iter2);
@@ -48,7 +48,7 @@ class mwe {
 				iter3 = this._model.append(iter2);
 				this._model.set(iter3,[0,1,2],[false,3,"bears"]);
 			iter2 = this._model.append(iter1);
-			this._model.set(iter2,[0,1,2],[true,0,"friendly"]);
+			this._model.set(iter2,[0,1,2],[true,0,"friendly animals"]);
 				iter3 = this._model.append(iter2);
 				this._model.set(iter3,[0,1,2],[false,3,"frogs"]);
 				iter3 = this._model.append(iter2);
@@ -65,13 +65,14 @@ class mwe {
 		//set up filtered display
 		let filter = this._model.filter_new(null);
 		filter.set_visible_func(function (model,iter) {
-			let v = model.get_value(iter,0);
+			let g = model.get_value(iter,0);
 			let i = model.get_value(iter,1);
+			let v = model.get_value(iter,2);
 			let r = false;
-			if (i == 3){//(!v && (i == 3)) {
+			if (g || i == 3){//(!g && (i == 3)) {
 				r = true;
 			}
-			log("v: "+v+",  i: "+i+", r: "+r);
+			log("["+v+"]  g: "+g+",  i: "+i+", r: "+r);
 			return r;
 		});
 		this._view = new Gtk.TreeView({
@@ -82,7 +83,7 @@ class mwe {
 			headers_visible: false,
 			level_indentation: 0 });
 		let col = new Gtk.TreeViewColumn({
-			title: "Animal",
+			title: "Value",
 			expand: true });
 		let cell = new Gtk.CellRendererText();
 		col.pack_start(cell,true);
