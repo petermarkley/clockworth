@@ -272,11 +272,10 @@ class cwconf {
 				let g = model.get_value(iter,0);
 				let s = model.get_value(iter,4);
 				let r = false;
-				log("g: "+g+",  s: "+s);
-				log("hello world: "+(!g)+" && ("+s+" == 3: "+(s == 3)+")  ::  "+((!g) && (s == 3)));
-				if (!g && (s == 3)) {
+				if (s){//(!g && (s == 3)) {
 					r = true;
 				}
+				log("g: "+g+",  s: "+s+", r: "+r);
 				return r;
 			});
 			//filter.set_visible_column(0);
