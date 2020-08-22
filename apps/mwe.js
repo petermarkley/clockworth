@@ -32,14 +32,40 @@ class mwe {
 			GObject.TYPE_BOOLEAN,
 			GObject.TYPE_INT,
 			GObject.TYPE_STRING ]);
-		let iter = this._model.append(null);
-		this._model.set(iter,[0,1,2],[true,42,"lions"]);
-		iter = this._model.append(null);
-		this._model.set(iter,[0,1,2],[true,84,"tigers"]);
-		iter = this._model.append(null);
-		this._model.set(iter,[0,1,2],[false,39,"penguins"]);
-		iter = this._model.append(null);
-		this._model.set(iter,[0,1,2],[true,168,"bears"]);
+		
+		//populate with data
+		let iter1 = null;
+		let iter2 = null;
+		let iter3 = null;
+		iter1 = this._model.append(null);
+		this._model.set(iter1,[0,1,2],[true,0,"westminster quarters"]);
+			iter2 = this._model.append(iter1);
+			this._model.set(iter2,[0,1,2],[true,0,"quarter hours"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"first quarter"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"second quarter"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"third quarter"]);
+			iter2 = this._model.append(iter1);
+			this._model.set(iter2,[0,1,2],[true,0,"hours"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"stroke of 1"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"stroke of 2"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"stroke of 3"]);
+				iter3 = this._model.append(iter2);
+				this._model.set(iter3,[0,1,2],[false,3,"stroke of 4"]);
+				// etc. ...
+		iter1 = this._model.append(null);
+		this._model.set(iter1,[0,1,2],[true,0,"sunrise & sunset"]);
+			iter2 = this._model.append(iter1);
+			this._model.set(iter2,[0,1,2],[false,7,"sunrise"]);
+			iter2 = this._model.append(iter1);
+			this._model.set(iter2,[0,1,2],[false,7,"sunset"]);
+		iter1 = this._model.append(null);
+		this._model.set(iter1,[0,1,2],[true,0,"holidays"]);
 		
 		//set up filtered display
 		let filter = this._model.filter_new(null);
@@ -47,7 +73,7 @@ class mwe {
 			let v = model.get_value(iter,0);
 			let i = model.get_value(iter,1);
 			let r = false;
-			if (i == 39){//(!v && (i == 39)) {
+			if (i == 3){//(!v && (i == 3)) {
 				r = true;
 			}
 			log("v: "+v+",  i: "+i+", r: "+r);
@@ -70,10 +96,11 @@ class mwe {
 		this._view.expand_all();
 		this._view.set_show_expanders(false);
 		
-		this._window.add (this._view);
+		this._scroll = new Gtk.ScrolledWindow({ expand: true });
+		this._scroll.add(this._view);
+		this._window.add (this._scroll);
 		this._window.show_all();
 	}
-	
 };
 
 let app = new mwe ();
