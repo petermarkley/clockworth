@@ -76,7 +76,8 @@ class cwconf {
 		this._css   = new Gtk.CssProvider();
 		this._css.load_from_data(
 			".pane_header {font-size: 1.2em;} "+
-			".frame {border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.2);}");
+			".frame_inner {border-radius: 0px; border: 2px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.1);}"+
+			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.2);}");
 		let style = null;
 		
 		this._grid = new Gtk.Grid ({
@@ -85,15 +86,19 @@ class cwconf {
 		this._image = new Gtk.Image ({ file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png' });
 		this._grid.attach (this._image, 0, 0, 1, 1);
 		this._paned = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL);
-		this._paned.wide_handle = true;
+		this._paned.wide_handle = false;
 		this._paned.position = (1200-20*2)/2;
+		style = this._paned.get_style_context();
+		style.add_class("frame");
+		style.add_class("frame_outer");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._grid.attach (this._paned, 0, 1, 1, 1);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
 			row_spacing: 10,
 			hexpand: true,
-			margin_right: 5 });
+			margin: 5 });
 		this._treeLabel = new Gtk.Label({label: "Chime Events"});
 		style = this._treeLabel.get_style_context();
 		style.add_class("pane_header");
@@ -159,7 +164,7 @@ class cwconf {
 		this._tscroll = new Gtk.ScrolledWindow({
 			min_content_height: 300 });
 		style = this._tscroll.get_style_context();
-		style.add_class("frame");
+		style.add_class("frame_inner");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._tscroll.add(this._treeView);
 		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
@@ -168,7 +173,7 @@ class cwconf {
 		this._seqGrid = new Gtk.Grid({
 			row_spacing: 10,
 			hexpand: true,
-			margin_left: 5 });
+			margin: 5 });
 		this._seqLine = new Gtk.Grid({
 			column_spacing: 10,
 			halign: Gtk.Align.CENTER });
@@ -186,7 +191,7 @@ class cwconf {
 		this._sscroll = new Gtk.ScrolledWindow({ 
 			min_content_height: 300 });
 		style = this._sscroll.get_style_context();
-		style.add_class("frame");
+		style.add_class("frame_inner");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._slots = new Gtk.Grid({ 
 			row_spacing: 10,
