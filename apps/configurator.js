@@ -83,7 +83,11 @@ class cwconf {
 			row_spacing: 20,
 			hexpand: true });
 		this._image = new Gtk.Image ({ file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png' });
-		this._grid.attach (this._image, 0, 0, 2, 1);
+		this._grid.attach (this._image, 0, 0, 1, 1);
+		this._paned = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL);
+		this._paned.wide_handle = true;
+		this._paned.position = (1200-20*2)/2;
+		this._grid.attach (this._paned, 0, 1, 1, 1);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -94,7 +98,7 @@ class cwconf {
 		style.add_class("pane_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._treeGrid.attach (this._treeLabel, 0, 0, 1, 1);
-		this._grid.attach (this._treeGrid, 0, 1, 1, 1);
+		this._paned.add1 (this._treeGrid);
 		
 		//tree model
 		this._tree = new Gtk.TreeStore();
@@ -153,7 +157,7 @@ class cwconf {
 		this._treeView.expand_all();
 		this._tscroll = new Gtk.ScrolledWindow({
 			min_content_height: 300,
-			margin_right: 10 });
+			margin_right: 5 });
 		style = this._tscroll.get_style_context();
 		style.add_class("frame");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -177,10 +181,10 @@ class cwconf {
 		this._seqLine.attach (this._seqLabel, 0, 0, 1, 1);
 		this._seqLine.attach (this._seqInfo, 1, 0, 1, 1);
 		this._seqGrid.attach (this._seqLine, 0, 0, 1, 1);
-		this._grid.attach (this._seqGrid, 1, 1, 1, 1);
+		this._paned.add2 (this._seqGrid);
 		this._sscroll = new Gtk.ScrolledWindow({ 
 			min_content_height: 300,
-			margin_left: 10 });
+			margin_left: 5 });
 		style = this._sscroll.get_style_context();
 		style.add_class("frame");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
