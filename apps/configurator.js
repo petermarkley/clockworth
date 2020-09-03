@@ -75,7 +75,7 @@ class cwconf {
 			window_position: Gtk.WindowPosition.CENTER });
 		this._css   = new Gtk.CssProvider();
 		this._css.load_from_data(
-			".pane_header {font-size: 1.2em;} "+
+			".pane_header {font-size: 1.2em; letter-spacing: 2px;} "+
 			".frame_inner {border-radius: 0px; border: 2px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.1);}"+
 			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.2);}");
 		let style = null;
@@ -99,7 +99,10 @@ class cwconf {
 			row_spacing: 10,
 			hexpand: true,
 			margin: 5 });
-		this._treeLabel = new Gtk.Label({label: "Chime Events"});
+		this._treeLabel = new Gtk.Label({
+			label: "Chime Events",
+			margin_left: 30,
+			margin_right: 30});
 		style = this._treeLabel.get_style_context();
 		style.add_class("pane_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -176,7 +179,9 @@ class cwconf {
 			margin: 5 });
 		this._seqLine = new Gtk.Grid({
 			column_spacing: 10,
-			halign: Gtk.Align.CENTER });
+			halign: Gtk.Align.CENTER,
+			margin_left: 30,
+			margin_right: 30 });
 		style = this._seqLine.get_style_context();
 		style.add_class("pane_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
