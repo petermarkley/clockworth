@@ -92,13 +92,14 @@ class cwconf {
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
 			row_spacing: 10,
-			hexpand: true });
+			hexpand: true,
+			margin_right: 5 });
 		this._treeLabel = new Gtk.Label({label: "Chime Events"});
 		style = this._treeLabel.get_style_context();
 		style.add_class("pane_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._treeGrid.attach (this._treeLabel, 0, 0, 1, 1);
-		this._paned.add1 (this._treeGrid);
+		this._paned.pack1 (this._treeGrid,true,false);
 		
 		//tree model
 		this._tree = new Gtk.TreeStore();
@@ -156,8 +157,7 @@ class cwconf {
 		this._treeView.insert_column(col1,0);
 		this._treeView.expand_all();
 		this._tscroll = new Gtk.ScrolledWindow({
-			min_content_height: 300,
-			margin_right: 5 });
+			min_content_height: 300 });
 		style = this._tscroll.get_style_context();
 		style.add_class("frame");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -167,7 +167,8 @@ class cwconf {
 		//sequence grid
 		this._seqGrid = new Gtk.Grid({
 			row_spacing: 10,
-			hexpand: true });
+			hexpand: true,
+			margin_left: 5 });
 		this._seqLine = new Gtk.Grid({
 			column_spacing: 10,
 			halign: Gtk.Align.CENTER });
@@ -181,10 +182,9 @@ class cwconf {
 		this._seqLine.attach (this._seqLabel, 0, 0, 1, 1);
 		this._seqLine.attach (this._seqInfo, 1, 0, 1, 1);
 		this._seqGrid.attach (this._seqLine, 0, 0, 1, 1);
-		this._paned.add2 (this._seqGrid);
+		this._paned.pack2 (this._seqGrid,true,false);
 		this._sscroll = new Gtk.ScrolledWindow({ 
-			min_content_height: 300,
-			margin_left: 5 });
+			min_content_height: 300 });
 		style = this._sscroll.get_style_context();
 		style.add_class("frame");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
