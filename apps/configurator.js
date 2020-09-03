@@ -8,6 +8,9 @@ const GObject = imports.gi.GObject;
 const Pango = imports.gi.Pango;
 
 const MAX_RECURSION_DEPTH = 100;
+const PRIMARY_R = 0.0;
+const PRIMARY_G = 0.0;
+const PRIMARY_B = 0.0;
 
 class cwconf {
 	// Create the application itself
@@ -72,7 +75,8 @@ class cwconf {
 			window_position: Gtk.WindowPosition.CENTER });
 		this._css   = new Gtk.CssProvider();
 		this._css.load_from_data(
-			".pane_header {font-size: 1.2em;} ");
+			".pane_header {font-size: 1.2em;} "+
+			".frame {border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.2);}");
 		let style = null;
 		
 		this._grid = new Gtk.Grid ({
@@ -150,6 +154,9 @@ class cwconf {
 		this._tscroll = new Gtk.ScrolledWindow({
 			min_content_height: 300,
 			margin_right: 10 });
+		style = this._tscroll.get_style_context();
+		style.add_class("frame");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._tscroll.add(this._treeView);
 		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
 		
@@ -174,6 +181,9 @@ class cwconf {
 		this._sscroll = new Gtk.ScrolledWindow({ 
 			min_content_height: 300,
 			margin_left: 10 });
+		style = this._sscroll.get_style_context();
+		style.add_class("frame");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._slots = new Gtk.Grid({ 
 			row_spacing: 10,
 			hexpand: true });
