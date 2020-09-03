@@ -194,11 +194,15 @@ class cwconf {
 		for (let i=1; i<=10; i++) {
 			let div = new Gtk.Grid({
 				row_spacing: 2 });
+			if (i==1) {
+				div.margin_top = 10;
+			}
 			this._slots.attach (div, 0, i-1, 1, 1);
 			let label = new Gtk.Label({
 				label: "Slot "+i,
 				halign: Gtk.Align.START,
-				expand: false });
+				expand: false,
+				margin_left: 10 });
 			div.attach (label, 0, 0, 1, 1);
 			let filter = this._tree_flat.filter_new(null);
 			filter.set_visible_func(function (model,iter) {
