@@ -172,6 +172,44 @@ class cwconf {
 		this._tscroll.add(this._treeView);
 		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
 		
+		//tree toolbar
+		this._treeBar = new Gtk.Toolbar({ hexpand: true });
+		this._treeGrid.attach (this._treeBar, 0, 2, 1, 1);
+		this._tb1 = new Gtk.ToolButton({
+			icon_name: 'list-add',
+			hexpand: true });
+		this._treeBar.insert(this._tb1,-1);
+		this._ts1 = new Gtk.SeparatorToolItem({ draw: true });
+		this._treeBar.insert(this._ts1,-1);
+		this._tb2 = new Gtk.ToolButton({
+			icon_name: 'list-remove',
+			hexpand: true });
+		this._treeBar.insert(this._tb2,-1);
+		this._ts2 = new Gtk.SeparatorToolItem({ draw: true });
+		this._treeBar.insert(this._ts2,-1);
+		this._tb3 = new Gtk.ToolButton({
+			icon_name: 'gtk-unindent',
+			hexpand: true });
+		this._treeBar.insert(this._tb3,-1);
+		this._ts3 = new Gtk.SeparatorToolItem({ draw: true });
+		this._treeBar.insert(this._ts3,-1);
+		this._tb4 = new Gtk.ToolButton({
+			icon_name: 'gtk-indent',
+			hexpand: true });
+		this._treeBar.insert(this._tb4,-1);
+		this._ts4 = new Gtk.SeparatorToolItem({ draw: true });
+		this._treeBar.insert(this._ts4,-1);
+		this._tb5 = new Gtk.ToolButton({
+			icon_name: 'go-up',
+			hexpand: true });
+		this._treeBar.insert(this._tb5,-1);
+		this._ts5 = new Gtk.SeparatorToolItem({ draw: true });
+		this._treeBar.insert(this._ts5,-1);
+		this._tb6 = new Gtk.ToolButton({
+			icon_name: 'go-down',
+			hexpand: true });
+		this._treeBar.insert(this._tb6,-1);
+		
 		//sequence grid
 		this._seqGrid = new Gtk.Grid({
 			row_spacing: 10,
