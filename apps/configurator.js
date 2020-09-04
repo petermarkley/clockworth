@@ -96,13 +96,13 @@ class cwconf {
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
-			row_spacing: 10,
 			hexpand: true,
 			margin: 5 });
 		this._treeLabel = new Gtk.Label({
 			label: "Chime Events",
 			margin_left: 30,
-			margin_right: 30});
+			margin_right: 30,
+			margin_bottom: 10 });
 		style = this._treeLabel.get_style_context();
 		style.add_class("pane_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -178,48 +178,54 @@ class cwconf {
 		this._tb1 = new Gtk.ToolButton({
 			icon_name: 'list-add',
 			hexpand: true });
+		this._tb1.homogenous = true;
 		this._treeBar.insert(this._tb1,-1);
 		this._ts1 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts1,-1);
 		this._tb2 = new Gtk.ToolButton({
 			icon_name: 'list-remove',
 			hexpand: true });
+		this._tb2.homogenous = true;
 		this._treeBar.insert(this._tb2,-1);
 		this._ts2 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts2,-1);
 		this._tb3 = new Gtk.ToolButton({
 			icon_name: 'gtk-unindent',
 			hexpand: true });
+		this._tb3.homogenous = true;
 		this._treeBar.insert(this._tb3,-1);
 		this._ts3 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts3,-1);
 		this._tb4 = new Gtk.ToolButton({
 			icon_name: 'gtk-indent',
 			hexpand: true });
+		this._tb4.homogenous = true;
 		this._treeBar.insert(this._tb4,-1);
 		this._ts4 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts4,-1);
 		this._tb5 = new Gtk.ToolButton({
 			icon_name: 'go-up',
 			hexpand: true });
+		this._tb5.homogenous = true;
 		this._treeBar.insert(this._tb5,-1);
 		this._ts5 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts5,-1);
 		this._tb6 = new Gtk.ToolButton({
 			icon_name: 'go-down',
 			hexpand: true });
+		this._tb6.homogenous = true;
 		this._treeBar.insert(this._tb6,-1);
 		
 		//sequence grid
 		this._seqGrid = new Gtk.Grid({
-			row_spacing: 10,
 			hexpand: true,
 			margin: 5 });
 		this._seqLine = new Gtk.Grid({
 			column_spacing: 10,
 			halign: Gtk.Align.CENTER,
 			margin_left: 30,
-			margin_right: 30 });
+			margin_right: 30,
+			margin_bottom: 10 });
 		style = this._seqLine.get_style_context();
 		style.add_class("pane_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
