@@ -304,6 +304,26 @@ class cwconf {
 			div.attach (view, 0, 1, 1, 1);
 		}
 		
+		//sequence toolbar
+		this._seqBar = new Gtk.Toolbar({
+			hexpand: true,
+			show_arrow: false });
+		this._seqGrid.attach (this._seqBar, 0, 2, 1, 1);
+		this._sb1 = new Gtk.ToolButton({
+			icon_name: 'go-up',
+			tooltip_text: "Move to Previous Slot",
+			hexpand: true });
+		this._sb1.homogenous = true;
+		this._seqBar.insert(this._sb1,-1);
+		this._ss1 = new Gtk.SeparatorToolItem({ draw: true });
+		this._seqBar.insert(this._ss1,-1);
+		this._sb2 = new Gtk.ToolButton({
+			icon_name: 'go-down',
+			tooltip_text: "Move to Next Slot",
+			hexpand: true });
+		this._sb2.homogenous = true;
+		this._seqBar.insert(this._sb2,-1);
+		
 		this._window.add (this._grid);
 		this._window.show_all();
 	}
