@@ -6,6 +6,7 @@ const GLib = imports.gi.GLib;
 const ByteArray = imports.byteArray;
 const GObject = imports.gi.GObject;
 const Pango = imports.gi.Pango;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 
 const MAX_RECURSION_DEPTH = 100;
 const PRIMARY_R = 0.0;
@@ -73,6 +74,7 @@ class cwconf {
 			default_height: 800,
 			border_width: 20,
 			window_position: Gtk.WindowPosition.CENTER });
+		this._window.set_icon( GdkPixbuf.Pixbuf.new_from_file( GLib.get_current_dir() + '/img/clockworth-icon-alpha-300px.png' ) );
 		this._css   = new Gtk.CssProvider();
 		this._css.load_from_data(
 			".pane_header {font-size: 1.2em; letter-spacing: 2px;} "+
