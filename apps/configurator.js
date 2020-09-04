@@ -173,10 +173,13 @@ class cwconf {
 		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
 		
 		//tree toolbar
-		this._treeBar = new Gtk.Toolbar({ hexpand: true });
+		this._treeBar = new Gtk.Toolbar({
+			hexpand: true,
+			show_arrow: false });
 		this._treeGrid.attach (this._treeBar, 0, 2, 1, 1);
 		this._tb1 = new Gtk.ToolButton({
 			icon_name: 'list-add',
+			tooltip_text: "Add New",
 			hexpand: true });
 		this._tb1.homogenous = true;
 		this._treeBar.insert(this._tb1,-1);
@@ -184,6 +187,7 @@ class cwconf {
 		this._treeBar.insert(this._ts1,-1);
 		this._tb2 = new Gtk.ToolButton({
 			icon_name: 'list-remove',
+			tooltip_text: "Remove",
 			hexpand: true });
 		this._tb2.homogenous = true;
 		this._treeBar.insert(this._tb2,-1);
@@ -191,6 +195,7 @@ class cwconf {
 		this._treeBar.insert(this._ts2,-1);
 		this._tb3 = new Gtk.ToolButton({
 			icon_name: 'gtk-unindent',
+			tooltip_text: "Move Out of Group",
 			hexpand: true });
 		this._tb3.homogenous = true;
 		this._treeBar.insert(this._tb3,-1);
@@ -198,6 +203,7 @@ class cwconf {
 		this._treeBar.insert(this._ts3,-1);
 		this._tb4 = new Gtk.ToolButton({
 			icon_name: 'gtk-indent',
+			tooltip_text: "Move Into Group",
 			hexpand: true });
 		this._tb4.homogenous = true;
 		this._treeBar.insert(this._tb4,-1);
@@ -205,6 +211,7 @@ class cwconf {
 		this._treeBar.insert(this._ts4,-1);
 		this._tb5 = new Gtk.ToolButton({
 			icon_name: 'go-up',
+			tooltip_text: "Move Up",
 			hexpand: true });
 		this._tb5.homogenous = true;
 		this._treeBar.insert(this._tb5,-1);
@@ -212,6 +219,7 @@ class cwconf {
 		this._treeBar.insert(this._ts5,-1);
 		this._tb6 = new Gtk.ToolButton({
 			icon_name: 'go-down',
+			tooltip_text: "Move Down",
 			hexpand: true });
 		this._tb6.homogenous = true;
 		this._treeBar.insert(this._tb6,-1);
