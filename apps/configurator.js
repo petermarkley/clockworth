@@ -9,9 +9,9 @@ const Pango = imports.gi.Pango;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 
 const MAX_RECURSION_DEPTH = 100;
-const PRIMARY_R = 0.0;
-const PRIMARY_G = 0.0;
-const PRIMARY_B = 0.0;
+const PRIMARY_R = 0;
+const PRIMARY_G = 0;
+const PRIMARY_B = 0;
 
 class cwconf {
 	// Create the application itself
@@ -78,8 +78,8 @@ class cwconf {
 		this._css   = new Gtk.CssProvider();
 		this._css.load_from_data(
 			".pane_header {font-size: 1.2em; letter-spacing: 2px;} "+
-			".frame_inner {border-radius: 0px; border: 2px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.1);}"+
-			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.2);}");
+			".frame_inner {border-radius: 0px; border: 2px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.25);}"+
+			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.4);}");
 		let style = null;
 		
 		this._grid = new Gtk.Grid ({
