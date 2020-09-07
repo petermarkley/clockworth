@@ -34,15 +34,17 @@ class cwconf {
 		this._buildUI();
 	}
 	
-	_detReset(isSelected,model,iter) {
+	_detSetState(isSelected,model,iter) {
 		if (isSelected) {
 			let path = this._tree.get_value(iter,6)
 			if (path.length>0) {
 				this._detPath.label = path+" \u2192";
-				this._detPath.margin_end = 25;
+				this._detPath.margin_end = 20;
+				this._detPath.visible = true;
 			} else {
 				this._detPath.label = "";
 				this._detPath.margin_end = 0;
+				this._detPath.visible = false;
 			}
 			this._detLabel.label = this._tree.get_value(iter,1);
 			this._detLabel.sensitive = true;
@@ -52,6 +54,7 @@ class cwconf {
 		} else {
 			this._detPath.label = "";
 			this._detPath.margin_end = 0;
+			this._detPath.visible = false;
 			this._detLabel.label = "(no selection)";
 			this._detLabel.sensitive = false;
 			this._detEnable.active = false;
@@ -147,7 +150,7 @@ class cwconf {
 			halign: Gtk.Align.END,
 			valign: Gtk.Align.END });
 		this._detGrid.attach (this._detEnable, 3, 0, 1, 1);
-		this._detReset(false,null,null);
+		this._detSetState(false,null,null);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -431,7 +434,7 @@ class cwconf {
 	//selection functions
 	_onTreeSelectionChanged() {
 		let [ isSelected, model, iter ] = this.treeSelection.get_selected();
-		this._detReset(isSelected,model,iter);
+		this._detSetState(isSelected,model,iter);
 	}
 };
 
