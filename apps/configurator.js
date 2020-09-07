@@ -79,7 +79,8 @@ class cwconf {
 		this._css.load_from_data(
 			".pane_header {font-size: 1.2em; letter-spacing: 2px;} "+
 			".frame_inner {border-radius: 0px; border: 2px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.25);}"+
-			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.4);}");
+			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.4);}"+
+			".det_header {font-size: 1.2em; font-weight: bold;}");
 		let style = null;
 		
 		this._grid = new Gtk.Grid ({
@@ -91,7 +92,6 @@ class cwconf {
 		this._paned.wide_handle = false;
 		this._paned.position = (1200-20*2)/2;
 		style = this._paned.get_style_context();
-		style.add_class("frame");
 		style.add_class("frame_outer");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._grid.attach (this._paned, 0, 1, 1, 1);
@@ -99,10 +99,17 @@ class cwconf {
 		//detail view
 		this._detGrid = new Gtk.Grid({ hexpand: true });
 		this._grid.attach (this._detGrid, 0, 2, 1, 1);
-		this._detPath = new Gtk.Label({ label: "" });
+		this._detPath = new Gtk.Label({
+			label: "",
+			valign: Gtk.Align.END });
 		this._detGrid.attach (this._detPath, 0, 0, 1, 1);
-		this._detLabel = new Gtk.Label({ label: "" });
+		this._detLabel = new Gtk.Label({
+			label: "",
+			valign: Gtk.Align.END });
 		this._detGrid.attach (this._detLabel, 1, 0, 1, 1);
+		style = this._detLabel.get_style_context();
+		style.add_class("det_header");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -387,7 +394,7 @@ class cwconf {
 	_onTreeSelectionChanged() {
 		let [ isSelected, model, iter ] = this.treeSelection.get_selected();
 		let path = this._tree.get_value(iter,6)
-		this._detPath.label = (path.length>0?path+" \u2192 ":"");
+		this._detPath.label = (path.length>0?path+" \u2192\t":"");
 		this._detLabel.label = this._tree.get_value(iter,1);
 	}
 };
