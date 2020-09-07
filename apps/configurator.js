@@ -85,7 +85,7 @@ class cwconf {
 		this._grid = new Gtk.Grid ({
 			row_spacing: 20,
 			hexpand: true });
-		this._image = new Gtk.Image ({ file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-300px.png' });
+		this._image = new Gtk.Image ({ file: GLib.get_current_dir() + '/img/clockworth-photo-alpha-200px.png' });
 		this._grid.attach (this._image, 0, 0, 1, 1);
 		this._paned = Gtk.Paned.new(Gtk.Orientation.HORIZONTAL);
 		this._paned.wide_handle = false;
@@ -95,6 +95,12 @@ class cwconf {
 		style.add_class("frame_outer");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._grid.attach (this._paned, 0, 1, 1, 1);
+		
+		//detail view
+		this._detGrid = new Gtk.Grid({ hexpand: true });
+		this._grid.attach (this._detGrid, 0, 2, 1, 1);
+		this._detLabel = new Gtk.Label({ label: "" });
+		this._detGrid.attach (this._detLabel, 0, 0, 1, 1);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -167,12 +173,14 @@ class cwconf {
 		this._treeView.insert_column(col1,0);
 		this._treeView.expand_all();
 		this._tscroll = new Gtk.ScrolledWindow({
-			min_content_height: 300 });
+			min_content_height: 250 });
 		style = this._tscroll.get_style_context();
 		style.add_class("frame_inner");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._tscroll.add(this._treeView);
 		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
+		this.treeSelection = this._treeView.get_selection();
+		this.treeSelection.connect ('changed', this._onTreeSelectionChanged.bind(this));
 		
 		//tree toolbar
 		this._treeBar = new Gtk.Toolbar({
@@ -254,7 +262,7 @@ class cwconf {
 		this._seqGrid.attach (this._seqLine, 0, 0, 1, 1);
 		this._paned.pack2 (this._seqGrid,true,false);
 		this._sscroll = new Gtk.ScrolledWindow({ 
-			min_content_height: 300 });
+			min_content_height: 250 });
 		style = this._sscroll.get_style_context();
 		style.add_class("frame_inner");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -370,6 +378,12 @@ class cwconf {
 	}
 	_event_next() {
 		print("next");
+	}
+	
+	//selection functions
+	_onTreeSelectionChanged() {
+		let [ isSelected, model, iter ] = this.treeSelection.get_selected();
+		this._detLabel.label = this._tree.get_value(iter,5);
 	}
 };
 
