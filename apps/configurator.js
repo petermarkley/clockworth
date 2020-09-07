@@ -34,6 +34,25 @@ class cwconf {
 		this._buildUI();
 	}
 	
+	_detReset(isSelected,model,iter) {
+		if (isSelected) {
+			let path = this._tree.get_value(iter,6)
+			this._detPath.label = (path.length>0?path+" \u2192\t":"");
+			this._detLabel.label = this._tree.get_value(iter,1);
+			this._detLabel.sensitive = true;
+			this._detEnable.active = this._tree.get_value(iter,2);
+			this._detEnable.sensitive = true;
+			this._detEnableLabel.sensitive = true;
+		} else {
+			this._detPath.label = "";
+			this._detLabel.label = "(no selection)";
+			this._detLabel.sensitive = false;
+			this._detEnable.active = false;
+			this._detEnable.sensitive = false;
+			this._detEnableLabel.sensitive = false;
+		}
+	}
+	
 	_buildUI_tree(data, model, flat, parent, path, depth) {
 		if (depth > MAX_RECURSION_DEPTH) {
 			log("reached max recursion depth");
@@ -121,6 +140,7 @@ class cwconf {
 			halign: Gtk.Align.END,
 			valign: Gtk.Align.END });
 		this._detGrid.attach (this._detEnable, 3, 0, 1, 1);
+		this._detReset(false,null,null);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -404,22 +424,7 @@ class cwconf {
 	//selection functions
 	_onTreeSelectionChanged() {
 		let [ isSelected, model, iter ] = this.treeSelection.get_selected();
-		if (isSelected) {
-			let path = this._tree.get_value(iter,6)
-			this._detPath.label = (path.length>0?path+" \u2192\t":"");
-			this._detLabel.label = this._tree.get_value(iter,1);
-			this._detLabel.sensitive = true;
-			this._detEnable.active = this._tree.get_value(iter,2);
-			this._detEnable.sensitive = true;
-			this._detEnableLabel.sensitive = true;
-		} else {
-			this._detPath.label = "";
-			this._detLabel.label = "(no selection)";
-			this._detLabel.sensitive = false;
-			this._detEnable.active = false;
-			this._detEnable.sensitive = false;
-			this._detEnableLabel.sensitive = false;
-		}
+		this._detReset(isSelected,model,iter);
 	}
 };
 
