@@ -250,6 +250,7 @@ class cwconf {
 		this._treeGrid.attach (this._tscroll, 0, 1, 1, 1);
 		this.treeSelection = this._treeView.get_selection();
 		this.treeSelection.connect ('changed', this._onTreeSelectionChanged.bind(this));
+		this.treeSelection.set_mode(Gtk.SelectionMode.SINGLE);
 		
 		//tree toolbar
 		this._treeBar = new Gtk.Toolbar({
