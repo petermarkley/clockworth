@@ -110,6 +110,17 @@ class cwconf {
 		style = this._detLabel.get_style_context();
 		style.add_class("det_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+		this._detEnableLabel = new Gtk.Label({
+			label: "Enable",
+			hexpand: true,
+			halign: Gtk.Align.END,
+			valign: Gtk.Align.END,
+			margin_right: 15 });
+		this._detGrid.attach (this._detEnableLabel, 2, 0, 1, 1);
+		this._detEnable = new Gtk.Switch({
+			halign: Gtk.Align.END,
+			valign: Gtk.Align.END });
+		this._detGrid.attach (this._detEnable, 3, 0, 1, 1);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -393,9 +404,22 @@ class cwconf {
 	//selection functions
 	_onTreeSelectionChanged() {
 		let [ isSelected, model, iter ] = this.treeSelection.get_selected();
-		let path = this._tree.get_value(iter,6)
-		this._detPath.label = (path.length>0?path+" \u2192\t":"");
-		this._detLabel.label = this._tree.get_value(iter,1);
+		if (isSelected) {
+			let path = this._tree.get_value(iter,6)
+			this._detPath.label = (path.length>0?path+" \u2192\t":"");
+			this._detLabel.label = this._tree.get_value(iter,1);
+			this._detLabel.sensitive = true;
+			this._detEnable.active = this._tree.get_value(iter,2);
+			this._detEnable.sensitive = true;
+			this._detEnableLabel.sensitive = true;
+		} else {
+			this._detPath.label = "";
+			this._detLabel.label = "(no selection)";
+			this._detLabel.sensitive = false;
+			this._detEnable.active = false;
+			this._detEnable.sensitive = false;
+			this._detEnableLabel.sensitive = false;
+		}
 	}
 };
 
