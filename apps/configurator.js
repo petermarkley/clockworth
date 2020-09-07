@@ -48,6 +48,9 @@ class cwconf {
 			}
 			this._detLabel.label = this._tree.get_value(iter,1);
 			this._detLabel.sensitive = true;
+			this._detIsGroup.label = (this._tree.get_value(iter,0)?"[group]":"[event]");
+			this._detIsGroup.margin_start = 12;
+			this._detIsGroup.visible = true;
 			this._detEnable.active = this._tree.get_value(iter,2);
 			this._detEnable.sensitive = true;
 			this._detEnableLabel.sensitive = true;
@@ -57,6 +60,9 @@ class cwconf {
 			this._detPath.visible = false;
 			this._detLabel.label = "(no selection)";
 			this._detLabel.sensitive = false;
+			this._detIsGroup.label = "";
+			this._detIsGroup.margin_start = 0;
+			this._detIsGroup.visible = false;
 			this._detEnable.active = false;
 			this._detEnable.sensitive = false;
 			this._detEnableLabel.sensitive = false;
@@ -109,7 +115,8 @@ class cwconf {
 			".pane_header {font-size: 1.2em; letter-spacing: 2px;} "+
 			".frame_inner {border-radius: 0px; border: 2px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.25);}"+
 			".frame_outer {border-radius: 5px; border: 1px solid rgba("+PRIMARY_R+","+PRIMARY_G+","+PRIMARY_B+",0.4);}"+
-			".det_header {font-size: 1.2em; font-weight: bold;}");
+			".det_header {font-size: 1.2em; font-weight: bold;}"+
+			".det_isgroup {font-size: 1.2em; font-style: italic;}");
 		let style = null;
 		
 		this._grid = new Gtk.Grid ({
@@ -139,17 +146,24 @@ class cwconf {
 		style = this._detLabel.get_style_context();
 		style.add_class("det_header");
 		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+		this._detIsGroup = new Gtk.Label({
+			label: "",
+			valign: Gtk.Align.END });
+		this._detGrid.attach (this._detIsGroup, 2, 0, 1, 1);
+		style = this._detIsGroup.get_style_context();
+		style.add_class("det_isgroup");
+		style.add_provider(this._css,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 		this._detEnableLabel = new Gtk.Label({
 			label: "Enable",
 			hexpand: true,
 			halign: Gtk.Align.END,
 			valign: Gtk.Align.END,
 			margin_right: 15 });
-		this._detGrid.attach (this._detEnableLabel, 2, 0, 1, 1);
+		this._detGrid.attach (this._detEnableLabel, 3, 0, 1, 1);
 		this._detEnable = new Gtk.Switch({
 			halign: Gtk.Align.END,
 			valign: Gtk.Align.END });
-		this._detGrid.attach (this._detEnable, 3, 0, 1, 1);
+		this._detGrid.attach (this._detEnable, 4, 0, 1, 1);
 		this._detSetState(false,null,null);
 		
 		//tree grid
