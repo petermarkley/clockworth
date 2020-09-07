@@ -47,7 +47,7 @@ class cwconf {
 		switch (data.type) {
 			case "group":
 				iter = model.append(parent);
-				model.set(iter,[0,1,2,3,4,5],[true,data.label,data.enable,viable,0,label]);
+				model.set(iter,[0,1,2,3,4,5,6],[true,data.label,data.enable,viable,0,label,path]);
 				for (let i=0; i < data.members.length; i++) {
 					if (!this._buildUI_tree(data.members[i],model,flat,iter,label,depth+1))
 						return false;
@@ -55,7 +55,7 @@ class cwconf {
 			break;
 			case "event":
 				iter = model.append(parent);
-				model.set(iter,[0,1,2,3,4,5],[false,data.label,data.enable,viable,data.sequence,label]);
+				model.set(iter,[0,1,2,3,4,5,6],[false,data.label,data.enable,viable,data.sequence,label,path]);
 				
 				iter = flat.append();
 				flat.set(iter,[0,1,2,3,4],[data.label,data.enable,viable,data.sequence,label]);
@@ -99,8 +99,10 @@ class cwconf {
 		//detail view
 		this._detGrid = new Gtk.Grid({ hexpand: true });
 		this._grid.attach (this._detGrid, 0, 2, 1, 1);
+		this._detPath = new Gtk.Label({ label: "" });
+		this._detGrid.attach (this._detPath, 0, 0, 1, 1);
 		this._detLabel = new Gtk.Label({ label: "" });
-		this._detGrid.attach (this._detLabel, 0, 0, 1, 1);
+		this._detGrid.attach (this._detLabel, 1, 0, 1, 1);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
@@ -125,14 +127,15 @@ class cwconf {
 			GObject.TYPE_BOOLEAN,   //enable?
 			GObject.TYPE_BOOLEAN,   //viable?
 			GObject.TYPE_INT,       //sequence slot
-			GObject.TYPE_STRING ]); //path
+			GObject.TYPE_STRING,    //path with label
+			GObject.TYPE_STRING ]); //path without label
 		this._tree_flat = new Gtk.ListStore();
 		this._tree_flat.set_column_types ([
 			GObject.TYPE_STRING,    //label
 			GObject.TYPE_BOOLEAN,   //enable?
 			GObject.TYPE_BOOLEAN,   //viable?
 			GObject.TYPE_INT,       //sequence slot
-			GObject.TYPE_STRING ]); //path
+			GObject.TYPE_STRING ]); //path with label
 		for (let i=0; i < this.conf.events.length; i++) {
 			this._buildUI_tree(this.conf.events[i],this._tree,this._tree_flat,null,"",0);
 		}
@@ -383,7 +386,9 @@ class cwconf {
 	//selection functions
 	_onTreeSelectionChanged() {
 		let [ isSelected, model, iter ] = this.treeSelection.get_selected();
-		this._detLabel.label = this._tree.get_value(iter,5);
+		let path = this._tree.get_value(iter,6)
+		this._detPath.label = (path.length>0?path+" \u2192 ":"");
+		this._detLabel.label = this._tree.get_value(iter,1);
 	}
 };
 
