@@ -185,6 +185,7 @@ class cwconf {
 			hexpand: true });
 		this._tb1.homogenous = true;
 		this._treeBar.insert(this._tb1,-1);
+		this._tb1.connect('clicked',this._event_add.bind(this));
 		this._ts1 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts1,-1);
 		this._tb2 = new Gtk.ToolButton({
@@ -193,6 +194,7 @@ class cwconf {
 			hexpand: true });
 		this._tb2.homogenous = true;
 		this._treeBar.insert(this._tb2,-1);
+		this._tb2.connect('clicked',this._event_remove.bind(this));
 		this._ts2 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts2,-1);
 		this._tb3 = new Gtk.ToolButton({
@@ -201,6 +203,7 @@ class cwconf {
 			hexpand: true });
 		this._tb3.homogenous = true;
 		this._treeBar.insert(this._tb3,-1);
+		this._tb3.connect('clicked',this._event_unindent.bind(this));
 		this._ts3 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts3,-1);
 		this._tb4 = new Gtk.ToolButton({
@@ -209,6 +212,7 @@ class cwconf {
 			hexpand: true });
 		this._tb4.homogenous = true;
 		this._treeBar.insert(this._tb4,-1);
+		this._tb4.connect('clicked',this._event_indent.bind(this));
 		this._ts4 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts4,-1);
 		this._tb5 = new Gtk.ToolButton({
@@ -217,6 +221,7 @@ class cwconf {
 			hexpand: true });
 		this._tb5.homogenous = true;
 		this._treeBar.insert(this._tb5,-1);
+		this._tb5.connect('clicked',this._event_up.bind(this));
 		this._ts5 = new Gtk.SeparatorToolItem({ draw: true });
 		this._treeBar.insert(this._ts5,-1);
 		this._tb6 = new Gtk.ToolButton({
@@ -225,6 +230,7 @@ class cwconf {
 			hexpand: true });
 		this._tb6.homogenous = true;
 		this._treeBar.insert(this._tb6,-1);
+		this._tb6.connect('clicked',this._event_down.bind(this));
 		
 		//sequence grid
 		this._seqGrid = new Gtk.Grid({
@@ -317,6 +323,7 @@ class cwconf {
 			hexpand: true });
 		this._sb1.homogenous = true;
 		this._seqBar.insert(this._sb1,-1);
+		this._sb1.connect('clicked',this._event_prev.bind(this));
 		this._ss1 = new Gtk.SeparatorToolItem({ draw: true });
 		this._seqBar.insert(this._ss1,-1);
 		this._sb2 = new Gtk.ToolButton({
@@ -325,6 +332,7 @@ class cwconf {
 			hexpand: true });
 		this._sb2.homogenous = true;
 		this._seqBar.insert(this._sb2,-1);
+		this._sb2.connect('clicked',this._event_next.bind(this));
 		
 		this._window.add (this._grid);
 		this._window.show_all();
@@ -336,6 +344,32 @@ class cwconf {
 		if (ok) {
 			this.conf = JSON.parse(ByteArray.toString(contents));
 		}
+	}
+	
+	//button functions
+	_event_add() {
+		print("add");
+	}
+	_event_remove() {
+		print("remove");
+	}
+	_event_unindent() {
+		print("unindent");
+	}
+	_event_indent() {
+		print("indent");
+	}
+	_event_up() {
+		print("up");
+	}
+	_event_down() {
+		print("down");
+	}
+	_event_prev() {
+		print("prev");
+	}
+	_event_next() {
+		print("next");
 	}
 };
 
