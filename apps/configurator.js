@@ -37,7 +37,13 @@ class cwconf {
 	_detReset(isSelected,model,iter) {
 		if (isSelected) {
 			let path = this._tree.get_value(iter,6)
-			this._detPath.label = (path.length>0?path+" \u2192\t":"");
+			if (path.length>0) {
+				this._detPath.label = path+" \u2192";
+				this._detPath.margin_end = 25;
+			} else {
+				this._detPath.label = "";
+				this._detPath.margin_end = 0;
+			}
 			this._detLabel.label = this._tree.get_value(iter,1);
 			this._detLabel.sensitive = true;
 			this._detEnable.active = this._tree.get_value(iter,2);
@@ -45,6 +51,7 @@ class cwconf {
 			this._detEnableLabel.sensitive = true;
 		} else {
 			this._detPath.label = "";
+			this._detPath.margin_end = 0;
 			this._detLabel.label = "(no selection)";
 			this._detLabel.sensitive = false;
 			this._detEnable.active = false;
