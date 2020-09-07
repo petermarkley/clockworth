@@ -165,6 +165,10 @@ class cwconf {
 			valign: Gtk.Align.END });
 		this._detGrid.attach (this._detEnable, 4, 0, 1, 1);
 		this._detSetState(false,null,null);
+		this._detHeadRule = new Gtk.Separator({
+			orientation: Gtk.Orientation.HORIZONTAL,
+			margin_top: 5 });
+		this._detGrid.attach (this._detHeadRule, 0, 1, 5, 1);
 		
 		//tree grid
 		this._treeGrid = new Gtk.Grid({
