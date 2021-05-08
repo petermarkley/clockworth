@@ -7,7 +7,9 @@ Clockworth mixes the charm of an antique with the ease of electric power and NTP
 
 ![Clockworth](art/clockworth-photo-flat-HD.jpg)
 
-_Full installation/assembly instructions coming soon._
+# Installation / Assembly Instructions
+
+See the [Wiki](https://github.com/petermarkley/clockworth/wiki) for instructions on building your own robotic clock!
 
 # Legal Notice and Credit
 
