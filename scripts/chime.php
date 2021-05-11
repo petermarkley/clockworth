@@ -25,7 +25,11 @@
 // < http://www.gnu.org/licenses/ >.
 // 
 //----------------------------------------------------------------------
-date_default_timezone_set(exec("timedatectl | grep -i \"time zone\" | cut -d':' -f2 | cut -d' ' -f2"));
+if (PHP_OS_FAMILY == "Darwin") {
+	date_default_timezone_set(exec("/bin/ls -l /etc/localtime | rev | cut -d'/' -f1,2 | rev"));
+} else {
+	date_default_timezone_set(exec("timedatectl | grep -i \"time zone\" | cut -d':' -f2 | cut -d' ' -f2"));
+}
 
 define("MAX_RECURSION_DEPTH", "100");
 define("CLOCK_ROOT", dirname(__DIR__));
