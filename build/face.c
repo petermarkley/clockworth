@@ -209,6 +209,7 @@ struct hand *inithand(unsigned int gpio_ctl, unsigned int gpio_fdb, hand_type ty
 	gpioSetMode        (c->ctl.gpio,PI_OUTPUT);
 	gpioSetPWMfrequency(c->ctl.gpio,50);
 	gpioSetPWMrange    (c->ctl.gpio,20000);
+	gpioSetPullUpDown  (c->ctl.gpio,PI_PUD_UP);
 	gpioSetMode        (c->fdb.gpio,PI_INPUT);
 	gpioSetAlertFuncEx (c->fdb.gpio,getfdb,(void *)&(c->fdb));
 	return c;
